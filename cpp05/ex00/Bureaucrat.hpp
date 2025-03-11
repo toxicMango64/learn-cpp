@@ -1,81 +1,42 @@
-#ifndef BUREAUCRAT_HPP
-#define BUREAUCRAT_HPP
+#ifndef _BUREAUCRAT_HPP_
+#define _BUREAUCRAT_HPP_
 
 #include <iostream>
 #include <string>
+#include <stdexcept>
+#include <climits>
 
-#define MAX_GRADE 1
-#define MIN_GRADE 150
+using std::string;
+using std::cout;
+using std::endl;
 
 class Bureaucrat {
-private:
-  /*  Name of the Bureaucrat */
-  std::string const name_;
-  /*  Grade of the Bureaucrat */
-  unsigned int grade_;
+	public:
+		Bureaucrat(string name, int grade);
+		Bureaucrat();
+		Bureaucrat(Bureaucrat const &src);
+		~Bureaucrat();
 
-public:
-  /**
-   * @brief Default constructor.
-   */
-  Bureaucrat();
-  /**
-   * @brief Constructor with name and grade.
-   * @param name Name of the Bureaucrat.
-   * @param grade Grade of the Bureaucrat.
-   */
-  Bureaucrat(std::string const &name, int const &grade);
-  /**
-   * @brief Copy constructor.
-   * @param other The other Bureaucrat to copy.
-   */
-  Bureaucrat(const Bureaucrat &other);
-  /**
-   * @brief Copy assignment operator.
-   * @param other The other Bureaucrat to assign.
-   * @return A reference to the assigned Bureaucrat.
-   */
-  Bureaucrat &operator=(const Bureaucrat &other);
-  /**
-   * @brief Destructor.
-   */
-  ~Bureaucrat();
-  /**
-   * @brief Increment the Grade of the Bureaucrat by the value -1. Throws
-   * exception if invalid grade.
-   */
-  void incrementGrade();
-  /**
-   * @brief Decrement the Grade of the Bureaucrat by the value +1. Throws
-   * exception if invalid grade.
-   */
-  void decrementGrade();
-  /**
-   * @brief Getter for the Name of the Bureaucrat.
-   * @return The Name of the Bureaucrat.
-   */
-  std::string getName() const;
-  /**
-   * @brief Getter for the Grade of the Bureaucrat.
-   * @return The Grade of the Bureaucrat.
-   */
-  unsigned int getGrade() const;
+		Bureaucrat &	operator=(Bureaucrat const &rSym);
+		string			getName() const;
+		int				getGrade() const;
 
-  class GradeTooHighException : public std::exception {
-    /** @brief Throws an exception indicating a grade was outside the allowed
-     * range. Grade value is lower than MAX_GRADE. */
-    const char *what() const throw();
-  };
+		void			promote();
+		void			demote();
 
-  class GradeTooLowException : public std::exception {
-    /** @brief Throws an exception indicating a grade was outside the allowed
-     * range. Grade value is greater than MIN_GRADE. */
-    const char *what() const throw();
-  };
+		class GradeTooHighException : public std::exception {
+			public:
+				virtual const char *	what() const throw();
+		};
+		class GradeTooLowException : public std::exception {
+			public:
+				virtual const char *	what() const throw();
+		};
+	private:
+		string const	_name;
+		int				_grade;
 };
 
-/** @brief Prints the information about the Bureaucrat in the format
- * "<name>, bureaucrat grade <grade>." */
-std::ostream &operator<<(std::ostream &os, const Bureaucrat &obj);
+std::ostream &	operator<<(std::ostream & o, Bureaucrat const &rSym);
 
-#endif // BUREAUCRAT_HPP
+#endif

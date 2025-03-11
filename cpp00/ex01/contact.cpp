@@ -1,42 +1,170 @@
-// Contact.cpp
-#include "contact.hpp"
-#include "phonebook.hpp"
+#include "Contact.hpp"
 
-namespace app {
+Contact::Contact(void) {
+	return ;
+}
 
-    void Contact::setContact(const std::string& first, const std::string& last, const std::string& nick,
-                             const std::string& phone, const std::string& secret) {
-        if (first.empty() || last.empty() || nick.empty() || phone.empty() || secret.empty()) {
-            std::cout << "Error: All fields must be non-empty!" << std::endl;
-            return;
-        }
+Contact::~Contact(void) {
+	return ;
+}
 
-        firstName = first;
-        lastName = last;
-        nickname = nick;
-        phoneNumber = phone;
-        darkestSecret = secret;
-    }
+void	Contact::setFirstName(string firstName) {
+	string::iterator it;
+	bool isAlpha = true;
 
-    void Contact::displaySummary(int index) const {
-        const int fieldWidth = 10;
-        std::string formattedFirstName = (firstName.size() > fieldWidth) ? firstName.substr(0, fieldWidth - 1) + "." : firstName;
-        std::string formattedLastName = (lastName.size() > fieldWidth) ? lastName.substr(0, fieldWidth - 1) + "." : lastName;
-        std::string formattedNickname = (nickname.size() > fieldWidth) ? nickname.substr(0, fieldWidth - 1) + "." : nickname;
+	if (firstName.empty()) {
+		throw std::invalid_argument("Empty first name.");
+	}	
+	for (it = firstName.begin(); it < firstName.end(); ++it) {
+		if (!std::isalpha(*it)) {
+			isAlpha = false;
+			break ;
+		}
+	}
+	if (!isAlpha) {
+		throw std::invalid_argument("Invalid first name.");
+	}
+	_firstName = firstName;
+}
 
-        std::cout << std::setw(fieldWidth) << index << "|"
-                  << std::setw(fieldWidth) << formattedFirstName
-                  << "|" << std::setw(fieldWidth) << formattedLastName
-                  << "|" << std::setw(fieldWidth) << formattedNickname
-                  << std::endl;
-    }
+void	Contact::setLastName(string lastName) {
+	string::iterator it;
+	bool isAlpha = true;
 
-    void Contact::displayDetails() const {
-        std::cout << INFO_COLOR  << "First Name: " << firstName << RESET << std::endl;
-        std::cout << INFO_COLOR  << "Last Name: " << lastName << RESET << std::endl;
-        std::cout << INFO_COLOR  << "Nickname: " << nickname << RESET << std::endl;
-        std::cout << INFO_COLOR  << "Phone Number: " << phoneNumber << RESET << std::endl;
-        std::cout << INFO_COLOR  << "Darkest Secret: " << darkestSecret << RESET << std::endl;
-    }
+	if (lastName.empty()) {
+		throw std::invalid_argument("Empty last name.");
+	}	
+	for (it = lastName.begin(); it < lastName.end(); ++it) {
+		if (!std::isalpha(*it)) {
+			isAlpha = false;
+			break ;
+		}
+	}
+	if (!isAlpha) {
+		throw std::invalid_argument("Invalid last name.");
+	}
+	_lastName = lastName;
+};
 
+void	Contact::setNickname(string nickname) {
+	if (nickname.empty()) {
+		throw std::invalid_argument("Empty nickname.");
+	}
+	for (std::size_t i = 0; i < nickname.size(); ++i) {
+		char ch = nickname[i];
+		if (!std::isalnum(ch) && ch != '-' && ch != '_' && ch != '.') {
+			throw std::invalid_argument("Invalid nickname.");
+		}
+	}	
+	_nickname = nickname;
+};
+
+void	Contact::setPhoneNumber(string phoneNumber) {
+	if (phoneNumber.empty()) {
+		throw std::invalid_argument("Empty phone number.");
+	}	
+	for (std::size_t i = 0; i < phoneNumber.size(); ++i) {
+		char digit = phoneNumber[i];
+		if (!std::isdigit(digit)) {
+			throw std::invalid_argument("Invalid phone number.");
+		}
+	_phoneNumber = phoneNumber;
+	}
+};
+
+void	Contact::setDarkestSecret(string darkestSecret) {
+	if (darkestSecret.empty()) {
+		throw std::invalid_argument("Empty darkest secret.");
+	}
+	_darkestSecret = darkestSecret;
+};
+
+// Gettersx
+string	Contact::getFirstName(void) {
+	return (_firstName);
+};
+
+string	Contact::getLastName(void) {
+	return (_lastName);
+};
+
+string	Contact::getNickname(void) {
+	return (_nickname);
+};
+
+string	Contact::getPhoneNumber(void) {
+	return (_phoneNumber);
+};
+
+string	Contact::getDarkestSecret(void) {
+	return (_darkestSecret);
+};
+
+void Contact::setContact(void) {
+	try {
+		setInput("\tEnter first name: ", &Contact::setFirstName);
+		setInput("\tEnter last name: ", &Contact::setLastName);
+		setInput("\tEnter nickname: ", &Contact::setNickname);
+		setInput("\tEnter phone number: ", &Contact::setPhoneNumber);
+		setInput("\tEnter darkest secret: ", &Contact::setDarkestSecret);
+		std::cout << GREEN << "Contact added successfully!\n" << RESET << std::endl;
+	} catch (const std::exception& e) {
+		clearInput(_firstName);
+		clearInput(_lastName);
+		clearInput(_nickname);
+		clearInput(_phoneNumber);
+		clearInput(_darkestSecret);
+		throw;
+	}
+	return;
+}
+
+void Contact::setInput(const string& prompt, void (Contact::*setter)(const string)) {
+	string value;
+	bool isValid = false;
+
+	for (int i = 0; i < 3 && !isValid; i++) {
+		std::cout << GREEN << prompt << RESET;
+		if (!(std::cin >> value)) {
+			if (std::cin.eof()) {
+				std::cout << "Exiting the Phonebook. Goodbye!" << std::endl;
+				exit(0);
+			} else {
+				std::cerr << "Error reading input." << std::endl;
+				std::cin.clear();
+				std::cin.ignore(10000, '\n');
+				continue ;
+			}
+
+		}
+		if (value.empty()) {
+			std::cerr << "Error reading input." << std::endl;
+			break ;
+		}
+
+		try {
+			(this->*setter)(value);
+			isValid = true;
+		} catch (const std::exception& e) {
+			std::cout << YELLOW << "Invalid input. Please try again." << RESET << std::endl;
+		}
+	}
+	if (!isValid) {
+		throw std::runtime_error("\nFailed to set the attribute after three attempts.");
+	}
+	return;
+}
+
+void	Contact::clearInput(string& input) {
+	input.clear();
+}
+
+void	Contact::printContact(void) {
+	std::cout <<std::endl;
+	std::cout << "First name: " << this->getFirstName() << std::endl;
+	std::cout << "Last name: " << this->getLastName() << std::endl;
+	std::cout << "Nickname: " << this->getNickname() << std::endl;
+	std::cout << "Phone number: " << this->getPhoneNumber() << std::endl;
+	std::cout << "Darkest secret: " << this->getDarkestSecret() << std::endl;
+	std::cout <<std::endl;
 }

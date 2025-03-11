@@ -1,26 +1,30 @@
-NAME = bureaucrat
-CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
+NAME		= Bureaucrat
 
-SRC = 	main.cpp\
-		Bureaucrat.cpp\
+OBJ_PATH	=./obj/
 
-OBJ = $(SRC:.cpp=.o)
+CC			= c++
+CFLAGS		= -Wall -Wextra -Werror -std=c++98
 
-all: $(NAME)
+RM			= rm -rf
 
-$(NAME):$(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
+SRC 		= main.cpp \
+			Bureaucrat.cpp
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+OBJ 		= $(addprefix $(OBJ_PATH), $(notdir $(SRC:.cpp=.o)))
+
+$(OBJ_PATH)%.o: %.cpp
+			mkdir -p $(OBJ_PATH)
+			$(CC) $(CFLAGS) -c $< -o $@
+
+$(NAME): 	$(OBJ)
+			$(CC) $(CFLAGS) $(OBJ) -I $(OBJ_PATH) -o $(NAME)
+
+all:		$(NAME)
+
+re:			fclean all
 
 clean:
-	rm -f $(OBJ)
+			$(RM) $(OBJ) $(OBJ_PATH)
 
-fclean: clean
-	rm -f $(NAME)
-
-re: fclean all
-
-.PHONY: all clean fclean re
+fclean:		clean
+			$(RM) $(NAME)
