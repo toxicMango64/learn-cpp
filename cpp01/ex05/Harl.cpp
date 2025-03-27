@@ -21,17 +21,22 @@ void	Harl::error() const {
 }
 
 void	Harl::complain(string level) {
-	void	(Harl::*funcPtr)(void) const = NULL;
+	void	(Harl::*funcPtr)(void) const = nullptr;
 	void	(Harl::*arrayPtr[4])(void) const = {&Harl::debug, &Harl::info, &Harl::warning, &Harl::error};
-	string		arrayLevel[4] = {"debug", "info", "warning", "error"};
-	int		i = -1;
+	string	arrayLevel[4] = {"debug", "info", "warning", "error"};
 
-	while (++i < 4) {
-		if (arrayLevel[i] == level)
+	for (int i = 0; i < 4; ++i) {
+		if (arrayLevel[i] == level) {
 			funcPtr = arrayPtr[i];
+			break ;
+		}
 	}
+
 	if (!funcPtr) {
-		std::cout << "Invalid Harl's complain !" << std::endl; return;
+		std::cout << "Invalid Harl's complain !" << "\n";
 	}
-	(this->*funcPtr)();
+	else {
+		(this->*funcPtr)();
+	}
+	return ;
 }

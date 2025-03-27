@@ -1,12 +1,12 @@
 // Zombie.cpp
-#include "Zombie.hpp"
+#include "zombie.hpp"
 
 int main() {
-	Zombie *zombie = newZombie("John_d");
+	Zombie *zombie = newZombie("newZombie");
 	zombie->announce();
 	delete zombie;
 
-	randomChump("Bob_h");
+	randomChump("randomChump");
 
 	return 0;
 }

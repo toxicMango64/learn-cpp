@@ -6,6 +6,8 @@
 #include "Weapon.hpp"
 
 using std::string;
+using std::cout;
+using std::endl;
 
 class HumanB {
 	private:
@@ -15,7 +17,7 @@ class HumanB {
 	public:
 		HumanB(string name);
 		~HumanB();
-		
+
 		void	attack() const;
 		void	setWeapon(Weapon &weapon);
 };

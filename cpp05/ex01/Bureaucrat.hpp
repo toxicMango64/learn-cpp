@@ -1,5 +1,5 @@
-#ifndef _BUREAUCRAT_HPP_
-#define _BUREAUCRAT_HPP_
+#ifndef BUREAUCRAT_HPP
+# define BUREAUCRAT_HPP
 
 #include <iostream>
 #include <string>
@@ -9,6 +9,9 @@
 using std::string;
 
 class Bureaucrat {
+	private:
+		string const	_name;
+		int				_grade;
 	public:
 		Bureaucrat(string name, int grade);
 		Bureaucrat();
@@ -31,9 +34,6 @@ class Bureaucrat {
 			public:
 				virtual const char *	what() const throw();
 		};
-	private:
-		string const	_name;
-		int				_grade;
 };
 
 std::ostream &	operator<<(std::ostream & o, Bureaucrat const &rSym);
