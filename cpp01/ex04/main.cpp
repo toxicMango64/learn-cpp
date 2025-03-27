@@ -27,7 +27,7 @@ void FileReplacer(string filename, string s1, string s2) {
 	ifstream	input(filename.c_str());
 	
 	if (!input.is_open()) {
-		cout << "Error: cannot open file." << endl;
+		cout << "Error: cannot open file." << "\n";
 	}
 	else {
 		ofstream output(out_file.c_str());
@@ -35,7 +35,7 @@ void FileReplacer(string filename, string s1, string s2) {
 			getNewLine(line, s1, s2);
 			output << line;
 			if (!input.eof())
-				output << endl;
+				output << "\n";
 		}
 		input.close();
 		output.close();
@@ -43,26 +43,26 @@ void FileReplacer(string filename, string s1, string s2) {
 }
 
 int main(int argc, char* argv[]) {
-    try {
-        if (argc < 4) {
-            string errorMessage;
-            if (argc < 2) {
-                errorMessage += "Error: Filename is required.\n";
-            }
-            else if (argc < 3) {
-                errorMessage += "Error: String 1 is required.\n";
-            }
-            else {
-                errorMessage += "Error: String 2 is required.\n";
-            }
-            throw std::runtime_error(errorMessage);
-        }
+	try {
+		if (argc < 4) {
+			string errorMessage;
+			if (argc < 2) {
+				errorMessage += "Error: Filename is required.\n";
+			}
+			else if (argc < 3) {
+				errorMessage += "Error: String 1 is required.\n";
+			}
+			else {
+				errorMessage += "Error: String 2 is required.\n";
+			}
+			throw std::runtime_error(errorMessage);
+		}
 		FileReplacer(argv[1], argv[2], argv[3]);
 		return (0);
-    } catch (const std::exception &e) {
-        cerr << e.what();
-        cerr << "Usage: " << argv[0] << " <filename> <string1> <string2>" << endl;
-        return (1);
-    }
-    return (0);
+	} catch (const std::exception &e) {
+		cerr << e.what();
+		cerr << "Usage: " << argv[0] << " <filename> <string1> <string2>" << "\n";
+		return (1);
+	}
+	return (0);
 }

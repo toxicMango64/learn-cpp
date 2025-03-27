@@ -7,9 +7,9 @@ int main( void ) {
 	
 	c = b;
 
-	cout << a.getRawBits() << endl;
-	cout << b.getRawBits() << endl;
-	cout << c.getRawBits() << endl;
+	cout << a.getRawBits() << "\n";
+	cout << b.getRawBits() << "\n";
+	cout << c.getRawBits() << "\n";
 	
 	return 0;
 }
