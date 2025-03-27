@@ -1,26 +1,28 @@
-#include "Phonebook.hpp"
+#include "phonebook.hpp"
 
 int main() {
 	Phonebook phonebook;
 	std::string choice;
 
 	std::system("clear");
-	std::cout << "Welcome to the Phonebook!\n" << std::endl;
+	std::cout << "Welcome to the Phonebook!\n"
+			  << '\n';
 
 	while (true) {
 		std::cout << "Enter a command (ADD, SEARCH, EXIT): ";
 
 		if (!std::getline(std::cin, choice)) {
 			if (std::cin.eof()) {
-				std::cout << "Exiting the Phonebook. Goodbye!" << std::endl;
-				exit (0);
+				std::cout << "Exiting the Phonebook. Goodbye!" << '\n';
+				exit (1);
 			} else {
-				std::cerr << "Error reading input." << std::endl;
-				exit (0);
+				std::cerr << "Error reading input." << '\n';
+				exit (1);
 			}
 		}
 
 		if (choice.empty()) {
+			cout << "here" << "\n";
 			continue ;
 		}
 
@@ -34,11 +36,11 @@ int main() {
 			phonebook.searchContact();
 		}
 		else if ("EXIT" == choice) {
-			std::cout << "Exiting the Phonebook. Goodbye!" << std::endl;
+			std::cout << "Exiting the Phonebook. Goodbye!" << '\n';
 			break ;
 		}
 		else {
-			std::cout << "Invalid command. Please try again." << std::endl;
+			std::cout << "Invalid command. Please try again." << '\n';
 			continue ;
 		}
 	}

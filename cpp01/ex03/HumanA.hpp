@@ -18,7 +18,7 @@ class HumanA {
 		HumanA(const string name, Weapon &weapon);
 		~HumanA();
 
-		void	attack() const;		
+		void	attack() const;
 };
 
 #endif

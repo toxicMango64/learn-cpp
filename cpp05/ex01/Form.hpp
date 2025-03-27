@@ -1,15 +1,19 @@
-#ifndef _FORM_HPP_
-#define _FORM_HPP_
+#ifndef FORM_HPP
+# define FORM_HPP
 
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include "Bureaucrat.hpp"
 
 using std::string;
 
-#include "Bureaucrat.hpp"
-
 class Form {
+	private:
+		string const	_name;
+		bool			_signed;
+		int const		_signGrade;
+		int const		_executeGrade;
 	public:
 		Form(string name, int signGrade);
 		Form();
@@ -32,11 +36,6 @@ class Form {
 			public:
 				virtual const char *	what() const throw();
 		};
-	private:
-		string const	_name;
-		bool			_signed;
-		int const		_signGrade;
-		int const		_executeGrade;
 };
 
 std::ostream &	operator<<(std::ostream & o, Form const &rSym);

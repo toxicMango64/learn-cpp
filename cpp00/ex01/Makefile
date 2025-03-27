@@ -3,14 +3,14 @@ NAME		= phonebook
 OBJ_PATH	=./obj/
 # add a rule that also makes teh asmmbely files of these C++ codes as well
 
-CC			= g++
-CFLAGS		= -Wall -Wextra -Werror -std=c++98 -Ofast
+CC			= c++
+CFLAGS		= -Wall -Wextra -Werror -std=c++98# -Ofast
 
 RM			= rm -rf
 
 SRC 		= main.cpp \
-			Contact.cpp \
-			Phonebook.cpp 
+			contact.cpp \
+			phonebook.cpp 
 
 OBJ 		= $(addprefix $(OBJ_PATH), $(notdir $(SRC:.cpp=.o)))
 

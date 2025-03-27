@@ -1,5 +1,5 @@
-#ifndef _BUREAUCRAT_HPP_
-#define _BUREAUCRAT_HPP_
+#ifndef BUREAUCRAT_HPP
+#define BUREAUCRAT_HPP
 
 #include <iostream>
 #include <string>
@@ -11,18 +11,21 @@ using std::cout;
 using std::endl;
 
 class Bureaucrat {
+	private:
+		string const	_name;
+		int				_grade;
 	public:
-		Bureaucrat(string name, int grade);
 		Bureaucrat();
 		Bureaucrat(Bureaucrat const &src);
+		Bureaucrat(string name, int grade);
 		~Bureaucrat();
 
-		Bureaucrat &	operator=(Bureaucrat const &rSym);
-		string			getName() const;
-		int				getGrade() const;
+		Bureaucrat	&operator=(Bureaucrat const &rSym);
+		string		getName() const;
+		int			getGrade() const;
 
-		void			promote();
-		void			demote();
+		void		promote();
+		void		demote();
 
 		class GradeTooHighException : public std::exception {
 			public:
@@ -32,11 +35,8 @@ class Bureaucrat {
 			public:
 				virtual const char *	what() const throw();
 		};
-	private:
-		string const	_name;
-		int				_grade;
 };
 
-std::ostream &	operator<<(std::ostream & o, Bureaucrat const &rSym);
+std::ostream &	operator<<(std::ostream &o, Bureaucrat const &rSym);
 
 #endif

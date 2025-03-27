@@ -1,8 +1,8 @@
 #include "Bureaucrat.hpp"
 
 int	main() {
-	Bureaucrat *	Donald = NULL;
-	Bureaucrat *	Joe = NULL;
+	Bureaucrat	*Donald = NULL;
+	Bureaucrat	*Joe = NULL;
 
 	try {
 		Donald = new Bureaucrat("Donald", 5);
@@ -12,7 +12,7 @@ int	main() {
 		std::cerr << e.what() << '\n';
 	}
 	Joe = new Bureaucrat(*Donald);
-	cout << *Donald << endl;
-	cout << *Joe << endl;
+	cout << *Donald << "\n";
+	cout << *Joe << "\n";
 	delete Donald;
 }
