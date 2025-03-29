@@ -5,12 +5,17 @@
 #include <string>
 #include <stdexcept>
 #include <climits>
+#include <cstdint>
 
 using std::string;
 using std::cout;
 using std::endl;
 
 class Bureaucrat {
+	enum e_grade : std::int16_t {
+		GradeTooHigh = 1,
+		GradeTooLow = 150
+	};
 	private:
 		string const	_name;
 		int				_grade;
@@ -24,8 +29,8 @@ class Bureaucrat {
 		string		getName() const;
 		int			getGrade() const;
 
-		void		promote();
-		void		demote();
+		void		increment();
+		void		decrement();
 
 		class GradeTooHighException : public std::exception {
 			public:

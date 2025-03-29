@@ -6,7 +6,7 @@ int	main() {
 
 	try {
 		Donald = new Bureaucrat("Donald", 5);
-		Donald->promote();
+		Donald->increment();
 	}
 	catch (const std::exception& e) {
 		std::cerr << e.what() << '\n';
