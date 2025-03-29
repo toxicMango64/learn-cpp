@@ -1,26 +1,26 @@
 #include "Bureaucrat.hpp"
 
 Bureaucrat::Bureaucrat(string name, int grade) : _name(name) {
-	cout << "[C] Bureaucrat base constructor called." << endl;
-	if (grade < 1)
+	cout << "[C] Bureaucrat base constructor called." << "\n";
+	if (grade < GradeTooHigh)
 		throw Bureaucrat::GradeTooHighException();
-	else if (grade > 150)
+	else if (grade > GradeTooLow)
 		throw Bureaucrat::GradeTooLowException();
 	else
 		this->_grade = grade;
 }
 
 Bureaucrat::Bureaucrat() {
-	cout << "[C] Bureaucrat default constructor called." << endl;
+	cout << "[C] Bureaucrat default constructor called." << "\n";
 }
 
 Bureaucrat::Bureaucrat(Bureaucrat const &src) : _name(src.getName()) {
-	cout << "[C] Bureaucrat copy constructor called." << endl;
+	cout << "[C] Bureaucrat copy constructor called." << "\n";
 	*this = src;
 }
 
 Bureaucrat::~Bureaucrat() {
-	cout << "[D] Bureaucrat default destructor called." << endl;
+	cout << "[D] Bureaucrat default destructor called." << "\n";
 }
 
 Bureaucrat &	Bureaucrat::operator=(Bureaucrat const &rSym) {
@@ -43,15 +43,15 @@ int	Bureaucrat::getGrade() const {
 	return this->_grade;
 }
 
-void			Bureaucrat::promote() {
-	if (this->_grade > 1)
+void	Bureaucrat::increment() {
+	if (this->_grade > GradeTooHigh)
 		this->_grade--;
 	else
 		throw Bureaucrat::GradeTooHighException();
 }
 
-void			Bureaucrat::demote() {
-	if (this->_grade < 150)
+void	Bureaucrat::decrement() {
+	if (this->_grade < GradeTooLow)
 		this->_grade++;
 	else
 		throw Bureaucrat::GradeTooLowException();
