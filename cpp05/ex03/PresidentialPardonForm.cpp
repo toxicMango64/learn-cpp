@@ -32,5 +32,5 @@ PresidentialPardonForm::~PresidentialPardonForm()
 
 void	PresidentialPardonForm::executeConcrete() const
 {
-	cout << target << " has been pardoned by Zaphod Beeblebrox.!" << "\n";
+	cout << target << " has been pardoned by Zaphod Beeblebrox." << "\n";
 }
