@@ -11,13 +11,13 @@ class Fixed {
 		static const int	bits = 8;
 
 	public:
-		Fixed(void);
+		Fixed( void );
 		Fixed(Fixed const &src);
-		~Fixed(void);
+		~Fixed( void );
 
 		Fixed	&operator=(const Fixed &rSym);
-		int		getRawBits(void) const;
-		void	setRawBits(int const raw);
+		int		getRawBits( void ) const;
+		void	setRawBits( int const raw );
 };
 
 #endif

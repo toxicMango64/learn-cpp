@@ -1,4 +1,9 @@
 #include "AForm.hpp"
+#include "Bureaucrat.hpp"
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
+
 
 AForm::AForm(): isSigned(0), gradeSign(0), gradeExec(0)
 {
@@ -80,6 +85,18 @@ void	AForm::execute(const Bureaucrat& executor) const
 	executeConcrete();
 }
 
+AForm *AForm::makeForm(const std::string &form_type, const std::string &target)
+{
+	if (form_type == "shrubbery creation")
+		return new ShrubberyCreationForm(target);
+	else if (form_type == "robotomy request")
+		return new RobotomyRequestForm(target);
+	else if (form_type == "presidential pardon")
+		return new PresidentialPardonForm(target);
+	else
+		throw std::invalid_argument("Unknown form type: " + form_type);
+}
+
 const char*	AForm::GradeTooLowException::what() const throw()
 {
 	return "AForm grade too low!";
@@ -98,6 +115,16 @@ const char*	AForm::AlreadySignedException::what() const throw()
 const char*	AForm::ExecuteUnsignedException::what() const throw()
 {
 	return "Form couldn’t execute unsigned form!";
+}
+
+char const	*AForm::FormNotSignedException::what(void) const throw()
+{
+	return ("Form not signed");
+}
+
+char const	*AForm::InvalidFormException::what(void) const throw()
+{
+	return ("Invalid Form Request");
 }
 
 std::ostream&	operator<<(std::ostream &output, const AForm& Aform)
