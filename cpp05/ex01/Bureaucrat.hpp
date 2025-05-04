@@ -1,41 +1,43 @@
-#ifndef BUREAUCRAT_HPP
-# define BUREAUCRAT_HPP
+#pragma once
 
-#include <iostream>
-#include <string>
-#include <stdexcept>
-#include <climits>
+# include "Form.hpp"
+# include <iostream>
+# include <stdexcept>
+# include <string>
 
-using std::string;
+# define MIN_GRADE	150
+# define MAX_GRADE	1
 
-class Bureaucrat {
+class Form;
+class Bureaucrat
+{
 	private:
-		string const	_name;
-		int				_grade;
+		const string	name;
+		int					grade;
+
 	public:
-		Bureaucrat(string name, int grade);
-		Bureaucrat();
-		Bureaucrat(Bureaucrat const &src);
+		Bureaucrat(void);
+		Bureaucrat(const string& name, int grade);
+		Bureaucrat(const Bureaucrat& other);
+		Bureaucrat&	operator =(const Bureaucrat& other);
 		~Bureaucrat();
 
-		Bureaucrat &	operator=(Bureaucrat const &rSym);
-		string			getName() const;
-		int				getGrade() const;
+		const string&	getName() const;
+		int					getGrade() const;
 
-		void			promote();
-		void			demote();
-		void			signForm(string name, bool sign);
+		void	incrementGrade(int change = 1);
+		void	decrementGrade(int change = 1);
+		void	signForm(Form& form) const;
 
-		class GradeTooHighException : public std::exception {
-			public:
-				virtual const char *	what() const throw();
+		class GradeTooLowException: public exception
+		{
+			virtual const char*	what() const throw();
 		};
-		class GradeTooLowException : public std::exception {
-			public:
-				virtual const char *	what() const throw();
+
+		class GradeTooHighException: public exception
+		{
+			virtual const char*	what() const throw();
 		};
 };
 
-std::ostream &	operator<<(std::ostream & o, Bureaucrat const &rSym);
-
-#endif
+ostream&	operator<<(ostream &output, const Bureaucrat& bureaucrat);

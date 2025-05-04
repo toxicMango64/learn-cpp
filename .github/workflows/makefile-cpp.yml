@@ -1,0 +1,33 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    # - repo: https://github.com/cpplint/cpplint
+    #   rev: 2.0.0
+    #   hooks:
+    #     - id: cpplint
+    #   args:
+    #     - --filter=-whitespace/line_length,-whitespace/parens
+
+    - name: Install dependencies
+      run: make
+
+    - name: Run check
+      run: make check
+
+    # - name: configure
+    #   run: ./configure
+
+    # - name: Run distcheck
+    #   run: make distcheck

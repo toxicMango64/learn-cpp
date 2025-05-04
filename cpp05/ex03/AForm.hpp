@@ -35,6 +35,7 @@ class AForm
 		const std::string&	getTarget() const;
 		void			beSigned(const Bureaucrat& bureaucrat);
 		void			execute(const Bureaucrat& executor) const;
+		static AForm		*makeForm(std::string const &form_type, std::string const &target);
 
 		class GradeTooLowException: public std::exception
 		{
@@ -55,6 +56,17 @@ class AForm
 		{
 			virtual const char*	what() const throw();
 		};
+		class FormNotSignedException: public std::exception
+		{
+			public:
+				virtual char const	*what(void) const throw();
+		};
+		class InvalidFormException: public std::exception
+		{
+			public:
+				virtual char const	*what(void) const throw();
+		};
+
 };
 
 std::ostream&	operator<<(std::ostream &output, const AForm& Aform);

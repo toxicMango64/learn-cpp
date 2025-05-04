@@ -1,47 +1,45 @@
-#ifndef BUREAUCRAT_HPP
-#define BUREAUCRAT_HPP
+#pragma once
 
-#include <iostream>
-#include <string>
-#include <stdexcept>
-#include <climits>
-#include <cstdint>
+# include <iostream>
+# include <stdexcept>
+# include <string>
 
-using std::string;
+# define MAX_GRADE	1
+# define MIN_GRADE	150
+
 using std::cout;
-using std::endl;
+using std::ostream;
+using std::string;
+using std::exception;
 
-class Bureaucrat {
-	enum e_grade : std::int16_t {
-		GradeTooHigh = 1,
-		GradeTooLow = 150
-	};
+class Bureaucrat
+{
 	private:
-		string const	_name;
-		int				_grade;
+		const string	name;
+		int				grade;
+
 	public:
-		Bureaucrat();
-		Bureaucrat(Bureaucrat const &src);
-		Bureaucrat(string name, int grade);
+		Bureaucrat(void);
+		Bureaucrat(const string& name, int grade);
+		Bureaucrat(const Bureaucrat& other);
+		Bureaucrat&	operator =(const Bureaucrat& other);
 		~Bureaucrat();
 
-		Bureaucrat	&operator=(Bureaucrat const &rSym);
-		string		getName() const;
-		int			getGrade() const;
+		const string&	getName() const;
+		int				getGrade() const;
 
-		void		increment();
-		void		decrement();
+		void	incrementGrade(int change = 1);
+		void	decrementGrade(int change = 1);
 
-		class GradeTooHighException : public std::exception {
-			public:
-				virtual const char *	what() const throw();
+		class GradeTooLowException: public exception
+		{
+			virtual const char*	what() const throw();
 		};
-		class GradeTooLowException : public std::exception {
-			public:
-				virtual const char *	what() const throw();
+
+		class GradeTooHighException: public exception
+		{
+			virtual const char*	what() const throw();
 		};
 };
 
-std::ostream &	operator<<(std::ostream &o, Bureaucrat const &rSym);
-
-#endif
+ostream&	operator << (ostream &output, const Bureaucrat& bureaucrat);
