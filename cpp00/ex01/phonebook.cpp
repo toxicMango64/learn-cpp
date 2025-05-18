@@ -45,15 +45,15 @@ void	print_field(string field) {
 
 void	ft_print_header(string index, string first_name, string last_name, string nickname) {
 	
-	cout << "|";
+	std::cout  << "|";
 	print_field(index);
-	cout << "|";
+	std::cout  << "|";
 	print_field(first_name);
-	cout << "|";
+	std::cout  << "|";
 	print_field(last_name);
-	cout << "|";
+	std::cout  << "|";
 	print_field(nickname);
-	cout << "|" << endl;
+	std::cout  << "|" << endl;
 	return ;
 }
 

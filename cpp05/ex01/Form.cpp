@@ -18,16 +18,17 @@ Form::Form(const string& name, int gradeSign, int gradeExec): name(name), isSign
 		throw Form::GradeTooHighException();
 }
 
-Form::Form(const Form& copy): name(copy.name), isSigned(false), gradeSign(copy.gradeSign), gradeExec(copy.gradeExec)
+Form::Form(const Form& copy): name(copy.name + "_copy"), isSigned(false), gradeSign(copy.gradeSign), gradeExec(copy.gradeExec)
 {
 
 }
+
+
 Form&	Form::operator =(const Form& other)
 {
 	if (this != &other)
 	{
-		// i do not know what to equal them by
-		//gradeSign = other.gradeSign;
+		this->isSigned = other.isSigned;
 	}
 	return *this;
 }
