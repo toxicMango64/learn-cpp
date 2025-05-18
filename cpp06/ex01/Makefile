@@ -13,10 +13,17 @@ PHONY := all
 all: $(NAME)
 
 $(NAME): $(OBJ)
+<<<<<<< HEAD
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 $(OBJ_DIR)/%.o: %.cpp | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
+=======
+	c++ $(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+
+$(OBJ_DIR)/%.o: %.cpp | $(OBJ_DIR)
+	c++ $(CC) $(CFLAGS) -c $< -o $@
+>>>>>>> 71d067d01b6401f17885ad9cb6b96ebae5df7352
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
@@ -32,4 +39,8 @@ fclean: clean
 PHONY += re
 re: fclean all
 
+<<<<<<< HEAD
 .PHONY: ${PHONY}
+=======
+.PHONY: ${PHONY}
+>>>>>>> 71d067d01b6401f17885ad9cb6b96ebae5df7352
