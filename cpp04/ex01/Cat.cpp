@@ -2,7 +2,7 @@
 
 Cat::Cat() : Animal::Animal("CAT") {
 	this->_type = Animal::getType();
-	cout << "[C] A new Cat quietly approaches.." << endl;
+	std::cout  << "[C] A new Cat quietly approaches.." << endl;
 	this->_brain = new Brain();
 }
 
@@ -19,13 +19,13 @@ Cat &	Cat::operator=(Cat const &rSym) {
 
 Cat::~Cat() {
 	delete this->_brain;
-	cout << "[D] The Cat runs away.." << endl;
+	std::cout  << "[D] The Cat runs away.." << endl;
 }
 
 void	Cat::makeSound() const {
-	cout << "[Cat] : Meow.." << endl;
+	std::cout  << "[Cat] : Meow.." << endl;
 }
 
 void	Cat::think() const {
-	cout << "[Cat] : " + this->_brain->getRandomIdea() << endl;
+	std::cout  << "[Cat] : " + this->_brain->getRandomIdea() << endl;
 }

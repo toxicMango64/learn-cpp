@@ -34,4 +34,3 @@ AForm	*Intern::makeForm(const std::string &form_name, const std::string &target)
 		cout << "Intern creates form of " << form->getName() << "\n";
 	return (form);
 }
-

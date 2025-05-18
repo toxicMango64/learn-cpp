@@ -1,10 +1,10 @@
 #include "ClapTrap.hpp"
 
 ClapTrap::ClapTrap(string name) : name(name), _hitPoints(10), _energyPoints(10), _attackDamage(0) {
-	cout << std::setw(15) << "ClapTrap \"" << name << "\" was created with :" << endl;
-	cout << std::setw(27) << "HP : " << _hitPoints << endl;
-	cout << std::setw(27) << "Energy Points : " << _energyPoints << endl;
-	cout << std::setw(27) << "Attack Damage : " << _attackDamage << endl;
+	std::cout  << std::setw(15) << "ClapTrap \"" << name << "\" was created with :" << endl;
+	std::cout  << std::setw(27) << "HP : " << _hitPoints << endl;
+	std::cout  << std::setw(27) << "Energy Points : " << _energyPoints << endl;
+	std::cout  << std::setw(27) << "Attack Damage : " << _attackDamage << endl;
 }
 
 ClapTrap::ClapTrap(ClapTrap const &src) {
@@ -12,11 +12,11 @@ ClapTrap::ClapTrap(ClapTrap const &src) {
 }
 
 ClapTrap::ClapTrap() {
-	cout << "Basic ClapTrap was created : ";
+	std::cout  << "Basic ClapTrap was created : ";
 }
 
 ClapTrap::~ClapTrap() {
-	cout << "ClapTrap " << this->name << " was destringoy." << endl;
+	std::cout  << "ClapTrap " << this->name << " was destringoy." << endl;
 }
 
 ClapTrap &	ClapTrap::operator=(ClapTrap const &rSym) {
@@ -57,19 +57,19 @@ void	ClapTrap::setAttackDamage(int attackDamage) {
 
 void	ClapTrap::attack(const string &target) {
 	if (_energyPoints > 0) {
-		cout << "ClapTrap " << this->name << " attacks " << target << ", causing " << _attackDamage << " points of damage!" << endl;
+		std::cout  << "ClapTrap " << this->name << " attacks " << target << ", causing " << _attackDamage << " points of damage!" << endl;
 		_energyPoints -= 1;
 	}
 	else
-		cout << "ClapTrap " << this->name << " doesn't have enough energy points !" << endl;
+		std::cout  << "ClapTrap " << this->name << " doesn't have enough energy points !" << endl;
 }
 
 void	ClapTrap::takeDamage(unsigned int amount) {
-	cout << "Ouch ! " << this->name << " lose " << amount << " hp !" << endl;
+	std::cout  << "Ouch ! " << this->name << " lose " << amount << " hp !" << endl;
 	_hitPoints -= amount;
 }
 
 void	ClapTrap::beRepaired(unsigned int amount) {
-	cout << "ClapTrap " << this->name << " repair itself and gain " << amount << " hp !" << endl;
+	std::cout  << "ClapTrap " << this->name << " repair itself and gain " << amount << " hp !" << endl;
 	_hitPoints += amount;
 }

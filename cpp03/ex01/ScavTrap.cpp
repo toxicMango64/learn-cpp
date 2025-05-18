@@ -5,7 +5,7 @@ ScavTrap::ScavTrap(string name) : ClapTrap() {
 	this->setHitPoints(100);
 	this->setEnergyPoints(50);
 	this->setAttackDamage(20);
-	cout << "An evil ScavTrap appear, be careful with " << this->name << " and his " << _attackDamage << " attack damage !" << endl;
+	std::cout  << "An evil ScavTrap appear, be careful with " << this->name << " and his " << _attackDamage << " attack damage !" << endl;
 }
 
 ScavTrap::ScavTrap(ScavTrap const &src) : ClapTrap(src.getName()) {
@@ -13,7 +13,7 @@ ScavTrap::ScavTrap(ScavTrap const &src) : ClapTrap(src.getName()) {
 }
 
 ScavTrap::~ScavTrap() {
-	cout << "Evil ScavTrap " << this->name << " exploded." << endl;
+	std::cout  << "Evil ScavTrap " << this->name << " exploded." << endl;
 }
 
 ScavTrap &	ScavTrap::operator=(ScavTrap const &rSym) {
@@ -27,9 +27,9 @@ ScavTrap &	ScavTrap::operator=(ScavTrap const &rSym) {
 }
 
 void	ScavTrap::attack(const string &target) {
-	cout << "Evil ScavTrap " << this->name << " go for broke " << target << " causing him " << _attackDamage << " attack damage" << endl;
+	std::cout  << "Evil ScavTrap " << this->name << " go for broke " << target << " causing him " << _attackDamage << " attack damage" << endl;
 }
 
 void	ScavTrap::guardGate() const {
-	cout << "Evil ScavTrap " << this->name << " enter in protected mode !" << endl;
+	std::cout  << "Evil ScavTrap " << this->name << " enter in protected mode !" << endl;
 }
