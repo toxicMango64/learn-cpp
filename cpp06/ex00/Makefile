@@ -2,8 +2,8 @@ NAME := convert
 CC := c++
 CFLAGS := -Wall -Wextra -Werror -std=c++98
 
-SRC :=	./main.cpp \
-		./ScalarConverter.cpp
+SRC :=	main.cpp \
+		ScalarConverter.cpp
 
 OBJ_DIR := obj
 OBJ := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC))

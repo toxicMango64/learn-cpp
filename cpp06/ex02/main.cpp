@@ -40,8 +40,7 @@ void	identify(Base & p) {
 }
 
 Base *	generate() {
-	Base *	ptr;
-	
+	Base *	ptr = nullptr;
 	int n = rand() % 3;
 	
 	if (n == 2) {
