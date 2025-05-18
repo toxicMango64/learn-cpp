@@ -2,11 +2,11 @@
 #include "Dog.hpp"
 
 Animal::Animal(string type) : _type(type) {
-	cout << "[C] Animal base constructor called for type : " << this->_type << "." << endl;
+	std::cout  << "[C] Animal base constructor called for type : " << this->_type << "." << endl;
 }
 
 Animal::Animal() : _type("UNKNOWN") {
-	cout << "[C] Animal default constructor called." << endl;
+	std::cout  << "[C] Animal default constructor called." << endl;
 }
 
 Animal::Animal(Animal const &src) {
@@ -21,7 +21,7 @@ Animal &	Animal::operator=(Animal const &rSym) {
 }
 
 Animal::~Animal() {
-	cout << "[D] Default destructor called for type : " << this->_type << "." << endl;
+	std::cout  << "[D] Default destructor called for type : " << this->_type << "." << endl;
 }
 
 string	Animal::getType() const {
@@ -29,5 +29,5 @@ string	Animal::getType() const {
 }
 
 void	Animal::makeSound() const {
-	cout << "[Unknown Animal] Grrr..." << endl;
+	std::cout  << "[Unknown Animal] Grrr..." << endl;
 }

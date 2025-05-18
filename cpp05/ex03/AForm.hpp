@@ -5,7 +5,7 @@
 # include <stdexcept>
 # include <string>
 
-using std::cout;
+// using std::cout;
 
 class Bureaucrat;
 
