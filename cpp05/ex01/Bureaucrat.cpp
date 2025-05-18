@@ -2,7 +2,7 @@
 
 Bureaucrat::Bureaucrat(void): name("default"), grade(150)
 {
-	cout << "Bureaucrat got created as a " << this->getName() << " Bureaucrat, with grade of " << this->getGrade() << "\n";
+	std::cout  << "Bureaucrat got created as a " << this->getName() << " Bureaucrat, with grade of " << this->getGrade() << "\n";
 }
 
 
@@ -13,13 +13,13 @@ Bureaucrat::Bureaucrat(const string& name, int grade): name(name), grade(grade)
 	else if (grade < MAX_GRADE)
 		throw GradeTooHighException();
 	else
-		cout << "Bureaucrat of " << this->name << " got created" << "\n";
+		std::cout << "Bureaucrat of " << this->name << " got created with grade of " << this->grade << "\n";
 }
 
-Bureaucrat::Bureaucrat(const Bureaucrat& copy): name(copy.getName() + "_copy"), grade(copy.grade)
+Bureaucrat::Bureaucrat(const Bureaucrat& original): name(original.name + "_copy"), grade(original.grade)
 {
-	cout << "Bureaucrat of " << copy.name << " got copied as " << this->getName() << "\n";
-	*this = copy;
+	std::cout  << "Bureaucrat of " << original.name << " got copied as " << this->getName() << "\n";
+	*this = original;
 }
 
 Bureaucrat&	Bureaucrat::operator =(const Bureaucrat& other)
@@ -31,7 +31,7 @@ Bureaucrat&	Bureaucrat::operator =(const Bureaucrat& other)
 
 Bureaucrat::~Bureaucrat()
 {
-	cout << "Bureaucrat of " << this->name << " got destroyed" << "\n";
+	std::cout  << "Bureaucrat of " << this->name << " got destroyed" << "\n";
 }
 
 const string&	Bureaucrat::getName() const
@@ -73,11 +73,11 @@ void	Bureaucrat::signForm(Form& form) const
 	try
 	{
 		form.beSigned(*this);
-		cout << name << " signed the form of " << form.getName() << "\n";
+		std::cout  << name << " signed the form of " << form.getName() << "\n";
 	}
 	catch (exception& e)
 	{
-		cout << name << " could not sign the form of " << form.getName() << " because " << e.what() << "\n";
+		std::cout  << name << " could not sign the form of " << form.getName() << " because " << e.what() << "\n";
 	}
 }
 

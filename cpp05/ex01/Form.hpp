@@ -5,7 +5,6 @@
 # include <stdexcept>
 # include <string>
 
-using std::cout;
 using std::string;
 using std::exception;
 using std::ostream;
