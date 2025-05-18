@@ -2,7 +2,7 @@
 
 WrongCat::WrongCat() : WrongAnimal::WrongAnimal("WRONGCAT") {
 	this->_type = WrongAnimal::getType();
-	cout << "[C] Something strange approaches.." << endl;
+	std::cout  << "[C] Something strange approaches.." << endl;
 }
 
 WrongCat::WrongCat(WrongCat const &src) : WrongAnimal::WrongAnimal(src) {
@@ -17,5 +17,5 @@ WrongCat &	WrongCat::operator=(WrongCat const &rSym) {
 }
 
 WrongCat::~WrongCat() {
-	cout << "[D] Something strange runs away.." << endl;
+	std::cout  << "[D] Something strange runs away.." << endl;
 }

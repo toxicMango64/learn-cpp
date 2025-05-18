@@ -5,8 +5,6 @@
 # include <stdexcept>
 # include <string>
 
-using std::cout;
-
 class Bureaucrat;
 
 class AForm

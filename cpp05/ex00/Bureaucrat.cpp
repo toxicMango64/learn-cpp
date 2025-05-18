@@ -9,13 +9,13 @@ Bureaucrat::Bureaucrat(const string& name, int grade): name(name), grade(grade)
 {
 	if (grade > MIN_GRADE) { throw GradeTooLowException(); }
 	else if (grade < MAX_GRADE) { throw GradeTooHighException(); }
-	else { cout << "Bureaucrat of " << this->name << " got created" << "\n"; }
+	else { cout << "Bureaucrat of " << this->name << " got created with grade of " << this->grade << "\n"; }
 }
 
-Bureaucrat::Bureaucrat(const Bureaucrat& copy): name(copy.getName() + "_copy"), grade(copy.grade)
+Bureaucrat::Bureaucrat(const Bureaucrat& original): name(original.name + "_copy"), grade(original.grade)
 {
-	cout << "Bureaucrat of " << copy.name << " got copied as " << this->getName() << "\n";
-	*this = copy;
+	cout << "Bureaucrat of " << original.name << " got copied as " << this->getName() << "\n";
+	*this = original;
 }
 
 Bureaucrat&	Bureaucrat::operator =(const Bureaucrat& other)
