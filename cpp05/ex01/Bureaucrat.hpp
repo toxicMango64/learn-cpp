@@ -8,6 +8,10 @@
 # define MIN_GRADE	150
 # define MAX_GRADE	1
 
+using std::string;
+using std::ostream;
+using std::exception;
+
 class Form;
 class Bureaucrat
 {

@@ -1,11 +1,11 @@
 #include "Brain.hpp"
 
 Brain::Brain() {
-	cout << "[C] Neuronal creation of brain. Loading..." << endl;
+	std::cout  << "[C] Neuronal creation of brain. Loading..." << endl;
 	int	i = -1;
 	while (++i < 100)
 		this->_ideas[i] = this->ideaGenerator();
-	cout << endl;
+	std::cout  << endl;
 }
 
 Brain::Brain(Brain const &src) {
@@ -22,7 +22,7 @@ Brain &	Brain::operator=(Brain const &rSym) {
 }
 
 Brain::~Brain() {
-	cout << "[D] Brain destruction, no turning back. Loading..." << endl;
+	std::cout  << "[D] Brain destruction, no turning back. Loading..." << endl;
 }
 
 #include <array>

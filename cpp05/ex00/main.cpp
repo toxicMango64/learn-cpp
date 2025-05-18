@@ -57,9 +57,9 @@ int	main()
 	cout<<"\n"<<"---------- Increment Case -----------------"<<"\n";
 	try
 	{
-		Bureaucrat	bureau_1("bureau_3", 12);
+		Bureaucrat	bureau_1("bureau_3", 4);
 		cout << bureau_1;
-		bureau_1.incrementGrade(10);
+		bureau_1.incrementGrade(2);
 		cout << bureau_1;
 		bureau_1.incrementGrade();
 		cout << bureau_1;
@@ -76,9 +76,9 @@ int	main()
 	cout<<"\n"<<"---------- Decrement Case -----------------"<<"\n";
 	try
 	{
-		Bureaucrat	bureau_1("bureau_4", 139);
+		Bureaucrat	bureau_1("bureau_4", 130);
 		cout << bureau_1;
-		bureau_1.decrementGrade(10);
+		bureau_1.decrementGrade(19);
 		cout << bureau_1;
 		bureau_1.decrementGrade();
 		cout << bureau_1;
