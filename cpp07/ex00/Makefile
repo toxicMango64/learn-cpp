@@ -1,3 +1,4 @@
+# Copyright [2025] <myousaf>
 NAME = commands
 CC := c++
 CFLAGS := -Wall -Wextra -Werror -std=c++98
