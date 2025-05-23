@@ -1,5 +1,5 @@
 // Copyright [2025] <myousaf>
-#include "inc/Array.hpp"
+#include "Array.hpp"
 
 template<typename T>
 Array<T>::Array() : _array(new T[0]), _size(0) {}
