@@ -2,7 +2,9 @@
 SUB_MAKEFILES := $(shell find . -name Makefile -not -path "./Makefile")
 
 # run all the makefiles
-all:
+all: check
+
+check:
 	@echo "========== Building all projects =========="
 	@for makefile in $(SUB_MAKEFILES); do \
 		dir=$$(dirname $$makefile); \
