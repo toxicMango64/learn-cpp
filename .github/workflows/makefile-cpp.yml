@@ -21,7 +21,9 @@ jobs:
     #     - --filter=-whitespace/line_length,-whitespace/parens
 
     - name: Install dependencies
-      run: apt install -y make gcc clang g++ cland
+      run: sudo apt-get update && \
+        sudo apt-get install -y \
+        make gcc clang g++ cland
 
     - name: Run check
       run: make check
