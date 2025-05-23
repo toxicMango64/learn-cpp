@@ -1,5 +1,5 @@
 // Copyright [2025] <myousaf>
-#include "inc/Array.hpp"
+#include "Array.cpp"
 
 int	main()
 {
