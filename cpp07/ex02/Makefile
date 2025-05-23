@@ -1,3 +1,4 @@
+# Copyright [2025] <myousaf>
 NAME = array
 CC := c++
 CFLAGS := -Wall -Wextra -Werror -std=c++98
