@@ -1,9 +1,10 @@
 NAME = array
 CC := c++
 CFLAGS := -Wall -Wextra -Werror -std=c++98
+MKDIR := mkdir -p
 
-SRC =	./main.cpp \
-		ex02/Array.cpp 
+SRC =	main.cpp \
+		Array.cpp
 
 OBJ_DIR = obj
 OBJ = $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC))
@@ -12,21 +13,21 @@ PHONY := all
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(c++) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
 $(OBJ_DIR)/%.o: %.cpp | $(OBJ_DIR)
-	$(c++) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	$(MKDIR) $(OBJ_DIR)
 
 PHONY += clean
 clean:
-	rm -rf $(OBJ_DIR)
+	$(RM) -r $(OBJ_DIR)
 
 PHONY += fclean
 fclean: clean
-	rm -rf $(NAME)
+	$(RM) $(NAME)
 
 PHONY += re
 re: fclean all

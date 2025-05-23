@@ -1,4 +1,6 @@
-#pragma once
+// Copyright [2025] <myousaf>
+#ifndef _ARRAY_HPP_
+#define _ARRAY_HPP_
 
 #include <iostream>
 #include <string>
@@ -29,3 +31,5 @@ class Array {
 		T *	_array;
 		int	_size;
 };
+
+#endif
