@@ -1,9 +1,8 @@
+// Copyright [2025] <myousaf>
 #pragma once
 
 #include <iostream>
 #include <string>
-
-typedef std::string str;
 
 template<typename T>
 void	swap(T &a, T &b);

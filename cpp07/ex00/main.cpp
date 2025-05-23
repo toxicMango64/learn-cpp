@@ -1,8 +1,7 @@
 // Copyright [2025] <myousaf>
-#include "inc/main.hpp"
+#include "whatever.hpp"
 
 template<typename T>
-
 void swap(T &a, T &b) {
     T tmp;
 
@@ -11,7 +10,7 @@ void swap(T &a, T &b) {
     b = tmp;
 }
 
-template<typename T>
+template <typename T>
 T min(T a, T b) {
     return (b <= a) ? b : a;
 }
