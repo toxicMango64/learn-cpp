@@ -1,5 +1,5 @@
 // Zombie.cpp
-#include "Zombie.hpp"
+#include "zombie.hpp"
 
 void randomChump(string name) {
 	Zombie zombie(name);

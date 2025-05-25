@@ -55,7 +55,7 @@ void	Contact::setNickname(string nickname) {
 		if (!std::isalnum(ch) && ch != '-' && ch != '_' && ch != '.') {
 			throw std::invalid_argument("Invalid nickname.");
 		}
-	}	
+	}
 	_nickname = nickname;
 };
 
@@ -79,7 +79,7 @@ void	Contact::setDarkestSecret(string darkestSecret) {
 	_darkestSecret = darkestSecret;
 };
 
-// Gettersx
+// Getters
 string	Contact::getFirstName(void) {
 	return (_firstName);
 };
@@ -109,11 +109,7 @@ void Contact::setContact(void) {
 		setInput("\tEnter darkest secret: ", &Contact::setDarkestSecret);
 		std::cout << GREEN << "Contact added successfully!\n" << RESET << std::endl;
 	} catch (const std::exception& e) {
-		clearInput(_firstName);
-		clearInput(_lastName);
-		clearInput(_nickname);
-		clearInput(_phoneNumber);
-		clearInput(_darkestSecret);
+		clearInput();
 		throw;
 	}
 	return;
@@ -135,13 +131,11 @@ void Contact::setInput(const string& prompt, void (Contact::*setter)(const strin
 				std::cin.ignore(10000, '\n');
 				continue ;
 			}
-
 		}
 		if (value.empty()) {
 			std::cerr << "Error reading input." << std::endl;
 			break ;
 		}
-
 		try {
 			(this->*setter)(value);
 			isValid = true;
@@ -155,16 +149,20 @@ void Contact::setInput(const string& prompt, void (Contact::*setter)(const strin
 	return;
 }
 
-void	Contact::clearInput(string& input) {
-	input.clear();
+void	Contact::clearInput(void) {
+	_firstName.clear();
+	_lastName.clear();
+	_nickname.clear();
+	_phoneNumber.clear();
+	_darkestSecret.clear();
 }
 
 void	Contact::printContact(void) {
-	std::cout <<std::endl;
+	std::cout << std::endl;
 	std::cout << "First name: " << this->getFirstName() << std::endl;
 	std::cout << "Last name: " << this->getLastName() << std::endl;
 	std::cout << "Nickname: " << this->getNickname() << std::endl;
 	std::cout << "Phone number: " << this->getPhoneNumber() << std::endl;
 	std::cout << "Darkest secret: " << this->getDarkestSecret() << std::endl;
-	std::cout <<std::endl;
+	std::cout << std::endl;
 }

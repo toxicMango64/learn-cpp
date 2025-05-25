@@ -1,5 +1,4 @@
-#ifndef PHONEBOOK_HPP
-# define PHONEBOOK_HPP
+#pragma once
 
 #include "contact.hpp"
 # include <iostream>
@@ -10,16 +9,15 @@ using std::endl;
 using std::string;
 
 class Phonebook {
-	private:
-		static const int MAX_CAPACITY = 8;
-		Contact	contacts[MAX_CAPACITY];
-		int		index;
-		int		contactCount;
-	public:
-		Phonebook();
-		~Phonebook();
-		void	addContact();
-		void	searchContact();
-};
+private:
+	static const int MAX_CAPACITY = 8;
+	Contact	contacts[MAX_CAPACITY];
+	int		index;
+	int		contactCount;
 
-#endif
+public:
+	Phonebook();
+	~Phonebook();
+	void	addContact();
+	void	searchContact();
+};
