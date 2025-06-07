@@ -7,49 +7,53 @@ evaluator::evaluator(evaluator const &src) { *this = src; }
 evaluator::~evaluator(void) { }
 
 evaluator &evaluator::operator=(evaluator const &src) {
-    if (this != &src)
-        *this = src;
+    if (this != &src) { *this = src; }
     return (*this);
 }
 
-double evaluator::evaluate(std::string expression) {
+static bool isOperand(const std::string &token) {
+    if (token.empty()) {
+        return false;
+    }
+    char* end = NULL;
+    const double val = std::strtod(token.c_str(), &end);
+    if (end == token.c_str() + token.size() && val >= 0 && val <= 9) {
+        return true;
+    }
+    return false;
+}
+
+static bool isOperator(const std::string &token) {
+    if (token == "+" || token == "-" || token == "*" || token == "/") {
+        return (true);
+    }
+    return (false);
+}
+
+double evaluator::evaluate(const std::string &expression) {
     std::istringstream iss(expression);
     std::string token;
 
     while (iss >> token)
     {
-        if (_isOperand(token))
+        if (isOperand(token)) {
             _operands.push(std::strtod(token.c_str(), NULL));
-        else if (_isOperator(token))
+        }
+        else if (isOperator(token)) {
             try {
                 _doOperation(token.begin()[0]);
             } catch (std::exception &e) {
                 throw EvaluateErrorException(e.what());
             }
-        else
+        }
+        else {
             throw EvaluateErrorException("Invalid token: " + token);
+        }
     }
-    if (_operands.size() != 1)
+    if (_operands.size() != 1) {
         throw EvaluateErrorException("Invalid expression: More or less than one operand left on stack.");
+    }
     return (_operands.top());
-}
-
-bool evaluator::_isOperator(std::string token) {
-    if (token == "+" || token == "-" || token == "*" || token == "/")
-        return (true);
-    return (false);
-}
-
-bool evaluator::_isOperand(std::string token) {
-    if (token.empty()) {
-        return false;
-    }
-    char* end = NULL;
-    double val = std::strtod(token.c_str(), &end);
-    if (end == token.c_str() + token.size() && val >= 0 && val <= 9) {
-        return true;
-    }
-    return false;
 }
 
 void evaluator::_doOperation(char op) {
@@ -57,8 +61,9 @@ void evaluator::_doOperation(char op) {
     double op1 = 0;
     double op2 = 0;
 
-    if (_operands.size() < 2)
+    if (_operands.size() < 2) {
         throw EvaluateErrorException("Invalid expression: Not enough operands for operator.");
+    }
     op2 = _operands.top();
     _operands.pop();
     op1 = _operands.top();
