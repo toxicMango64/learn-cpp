@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     if (std::equal(control_vector.begin(), control_vector.end(), vector.begin()))
         std::cout << "Time to process a range of " << vector.size() << " elements with std::vector : " << vector_duration << " us" << std::endl;
     else
-        std::cout << RED << "Error: vector not sorted" << RESET << std::endl;
+        std::cout << "Error: vector not sorted" << std::endl;
 
     clock_t list_start = clock();
     std::list<int> list = parse_sequence<std::list<int> >(argv[1]);
@@ -40,6 +40,6 @@ int main(int argc, char **argv) {
     if (std::equal(control_list.begin(), control_list.end(), list.begin()))
         std::cout << "Time to process a range of " << list.size() << " elements with std::list : " << list_duration << " us" << std::endl;
     else
-        std::cout << RED << "Error: list not sorted" << RESET << std::endl;    
+        std::cout << "Error: list not sorted" << std::endl;    
     return (0);
 }
