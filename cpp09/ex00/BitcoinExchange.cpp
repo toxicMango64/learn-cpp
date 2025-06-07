@@ -28,10 +28,16 @@ BitcoinExchange::~BitcoinExchange(void) {}
     return (*this);
 }
 
+std::pair<std::string, double> BitcoinExchange::parseLine(std::string line, char delimiter) {
+    std::string date = line.substr(0, line.find(delimiter));
+    std::string value = line.substr(line.find(delimiter) + 1);
+    double fvalue = std::atof(value.c_str());
+    return std::make_pair(date, fvalue);
+}
+
 void BitcoinExchange::loadDatabase(void) {
     std::ifstream file(DATA_FILE);
-    std::string line, date, value;
-    float fvalue;
+    std::string line;
 
     if (!file.is_open()) {
         throw DatabaseNotFoundException();
@@ -49,10 +55,8 @@ void BitcoinExchange::loadDatabase(void) {
             std::cout << "Error: " << e.what() << std::endl;
             throw BadDatabaseFormatException();
         }
-        date = line.substr(0, line.find(','));
-        value = line.substr(line.find(',') + 1);
-        fvalue = std::atof(value.c_str());
-        _database[date] = fvalue;
+        std::pair<std::string, double> parsed = parseLine(line, ',');
+        _database[parsed.first] = parsed.second;
     }
     file.close();
 }
@@ -60,9 +64,6 @@ void BitcoinExchange::loadDatabase(void) {
 void BitcoinExchange::readInput(std::string filename) {    
     std::ifstream file(filename.c_str());
     std::string line;
-    std::string date;
-    std::string value;
-    float fvalue;
 
     if (!file.is_open())
         throw InputNotFoundException();
@@ -76,10 +77,8 @@ void BitcoinExchange::readInput(std::string filename) {
             std::cout << "Error: " << e.what() << std::endl;
             continue ;
         }
-        date = line.substr(0, line.find('|'));
-        value = line.substr(line.find('|') + 1);
-        fvalue = std::atof(value.c_str());
-        _btc(date, fvalue);
+        std::pair<std::string, double> parsed = parseLine(line, '|');
+        _btc(parsed.first, parsed.second);
     }
 }
 

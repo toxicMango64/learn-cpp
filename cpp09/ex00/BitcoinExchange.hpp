@@ -21,6 +21,8 @@ private:
     
     BitcoinExchange(BitcoinExchange const &src);
     BitcoinExchange &operator=(BitcoinExchange const &src);
+
+    std::pair<std::string, double> parseLine(std::string line, char delimiter);
     
     std::string min_date;
     std::string max_date;
