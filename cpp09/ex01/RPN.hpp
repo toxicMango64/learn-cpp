@@ -24,12 +24,12 @@ public:
     double evaluate(std::string expression);
 
     class EvaluateErrorException : public std::exception {
-        public:
-            EvaluateErrorException(const std::string& message);
-            virtual ~EvaluateErrorException() throw() {};
-            virtual const char *what() const throw();
-        private:
-            std::string _message;
+    private:
+        std::string _message;
+    public:
+        EvaluateErrorException(const std::string& message);
+        virtual ~EvaluateErrorException() throw() {};
+        virtual const char *what() const throw();
     };
 };
 
