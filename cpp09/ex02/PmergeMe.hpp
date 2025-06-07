@@ -24,7 +24,7 @@ class PmergeMe {
         static void sort(std::list<int> &list);
 };
 
-bool validate_sequence(std::string sequence);
+bool validate_sequence(const std::string &sequence);
 
 template <typename T>
 T parse_sequence(std::string sequence) {
