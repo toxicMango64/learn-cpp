@@ -13,15 +13,13 @@ class evaluator
 {
 private:
     std::stack<double> _operands;
-    bool _isOperator(std::string token);
-    bool _isOperand(std::string token);
     void _doOperation(char op);
 public:
     evaluator();
     evaluator(evaluator const &src);
     ~evaluator();
     evaluator &operator=(evaluator const &src);
-    double evaluate(std::string expression);
+    double evaluate(const std::string &expression);
 
     class EvaluateErrorException : public std::exception {
     private:
