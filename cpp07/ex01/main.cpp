@@ -2,13 +2,13 @@
 #include "./iter.hpp"
 
 template<typename T>
-void	iter(T *adress, int lenght, void (*fct)(T& var)) {
+void	iter(T *adress, int lenght, void (*fct)(const T& var)) {
 	for (int i = 0; i < lenght; i++)
 		fct(adress[i]);
 }
 
 template<typename T>
-void	printValue(T &val) {
+void	printValue(const T &val) {
 	std::cout << val;
 }
 

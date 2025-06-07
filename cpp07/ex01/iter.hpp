@@ -7,7 +7,7 @@
 typedef std::string str;
 
 template<typename T>
-void	iter(T *adress, int lenght, void (*fct)(T& var));
+void	iter(T *adress, int lenght, void (*fct)(const T& var));
 
 template<typename T>
-void	printValue(T val);
+void	printValue(const T val);
