@@ -20,10 +20,10 @@ jobs:
     #   args:
     #     - --filter=-whitespace/line_length,-whitespace/parens
 
-    - name: Install dependencies
-      run: apt-get update && \
-        apt-get install -y \
-        make gcc clang g++ cland
+    # - name: Install dependencies
+    #   run: apt-get update && \
+    #     apt-get install -y \
+    #     make gcc clang g++ cland
 
     - name: Run check
       run: make check
