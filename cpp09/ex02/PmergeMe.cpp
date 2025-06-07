@@ -130,14 +130,20 @@ void PmergeMe::sort(std::list<int> &list) {
             } else {
                 std::list<int>::iterator current;
                 std::list<int>::iterator next;
-                for (std::list<int>::iterator its = sorted.begin(); its != sorted.end(); its++) {
-                    current = its++;
+				std::list<int>::iterator its;
+                for (its = sorted.begin(); its != sorted.end(); its++) {
+                    current = its;
+                    its++;
+                    if (its == sorted.end())
+                        break;
                     next = its;
-                    if (element > *current && (element < *next || its == sorted.end()))
+                    if (element > *current && (element < *next))
                         break ;
                     its = current;
                 }
                 sorted.insert(next, element);
+				its = sorted.begin();
+				std::advance(its, std::distance(sorted.begin(), current));
             }
         }
     }
