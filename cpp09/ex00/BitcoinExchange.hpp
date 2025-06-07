@@ -28,13 +28,12 @@ private:
     std::string max_date;
     
     // Helper functions for data validation and processing
-    bool checkHeader(std::string line, file_type type);
     bool checkDate(std::string date, file_type type);
-    bool checkValue(std::string value, file_type type);
+    static bool checkValue(std::string value, file_type type);
     void loadDatabase(void);    
     void _btc(const std::string &date, float value);
     void checkLine(std::string line, file_type type);
-    void trimCell(std::string &cell);
+    // static void trimCell(std::string &cell);
 
 public:
     BitcoinExchange(void);
@@ -48,7 +47,7 @@ public:
         private:
             std::string _error_message;
         public:
-            DatabaseLoadException(std::string error_message);
+            DatabaseLoadException(std::string const &error_message);
             virtual ~DatabaseLoadException(void) throw() {};
         virtual const char *what() const throw();
     };
