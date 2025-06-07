@@ -28,10 +28,10 @@ BitcoinExchange::~BitcoinExchange(void) {}
     return (*this);
 }
 
-std::pair<std::string, double> BitcoinExchange::parseLine(std::string line, char delimiter) {
-    std::string date = line.substr(0, line.find(delimiter));
-    std::string value = line.substr(line.find(delimiter) + 1);
-    double fvalue = std::atof(value.c_str());
+static std::pair<std::string, double> parseLine(const std::string &line, char delimiter) {
+    const std::string date = line.substr(0, line.find(delimiter));
+    const std::string value = line.substr(line.find(delimiter) + 1);
+    const double fvalue = std::atof(value.c_str());
     return std::make_pair(date, fvalue);
 }
 
@@ -52,40 +52,42 @@ void BitcoinExchange::loadDatabase(void) {
         try {
             checkLine(line, DATABASE);
         } catch (std::exception &e) {
-            std::cout << "Error: " << e.what() << std::endl;
+            std::cout << "Error: " << e.what() << '\n';
             throw BadDatabaseFormatException();
         }
-        std::pair<std::string, double> parsed = parseLine(line, ',');
-        _database[parsed.first] = parsed.second;
+        const std::pair<std::string, double> parsed = parseLine(line, ',');
+        _database[parsed.first] = static_cast<float>(parsed.second);
     }
     file.close();
 }
 
-void BitcoinExchange::readInput(std::string filename) {    
+void BitcoinExchange::readInput(const std::string &filename) {    
     std::ifstream file(filename.c_str());
     std::string line;
 
-    if (!file.is_open())
+    if (!file.is_open()) {
         throw InputNotFoundException();
+    }
     std::getline(file, line);
-    if (!checkHeader(line, INPUT))
+    if (!checkHeader(line, INPUT)) {
         throw BadInputFormatException();
+    }
     while (std::getline(file, line)) {
         try {
             checkLine(line, INPUT);
         } catch (std::exception &e) {
-            std::cout << "Error: " << e.what() << std::endl;
+            std::cout << "Error: " << e.what() << '\n';
             continue ;
         }
-        std::pair<std::string, double> parsed = parseLine(line, '|');
-        _btc(parsed.first, parsed.second);
+        const std::pair<std::string, double> parsed = parseLine(line, '|');
+        _btc(parsed.first, static_cast<float>(parsed.second));
     }
 }
 
-void BitcoinExchange::_btc(std::string date, float value) {
+void BitcoinExchange::_btc(const std::string &date, float value) {
     std::map<std::string, float>::iterator it = _database.find(date);
     std::string last_date;
-    float last_value;
+    float last_value = 0.0f;
 
     if (it != _database.end()) {
         std::cout << date << " => " << value << " = " << value * it->second << "\n";
@@ -103,7 +105,7 @@ void BitcoinExchange::_btc(std::string date, float value) {
 }
 
 bool BitcoinExchange::checkHeader(std::string header, file_type type) {
-    char delimiter = (type == DATABASE) ? ',' : '|';
+    const char delimiter = (type == DATABASE) ? ',' : '|';
     std::string column1 = "date";
     std::string column2 = (type == DATABASE) ? "exchange_rate" : "value";
 
@@ -122,8 +124,8 @@ bool BitcoinExchange::checkHeader(std::string header, file_type type) {
 }
 
 void BitcoinExchange::checkLine(std::string line, file_type type) {
-    char delimiter = (type == DATABASE) ? ',' : '|';
-    int delimiter_count = std::count(line.begin(), line.end(), delimiter);
+    const char delimiter = (type == DATABASE) ? ',' : '|';
+    const int delimiter_count = static_cast<int>(std::count(line.begin(), line.end(), delimiter));
 
     if (delimiter_count != 1) {
         throw BadInputDataException(line);
@@ -236,14 +238,14 @@ const char *BitcoinExchange::BadInputFormatException::what() const throw() {
     return ("Bad format in Input file. Ensure the input file follows the `date|value` format.");
 }
 
-BitcoinExchange::BadInputDataException::BadInputDataException(std::string line)
+BitcoinExchange::BadInputDataException::BadInputDataException(const std::string &line)
     : _error_message("Bad input data => " + line) {}
 
 const char *BitcoinExchange::BadInputDataException::what() const throw() {
     return (_error_message.c_str());
 }
 
-BitcoinExchange::BadDateException::BadDateException(std::string date)
+BitcoinExchange::BadDateException::BadDateException(const std::string &date)
     : _error_message("Invalid date => " + date) {}
 
 const char *BitcoinExchange::BadDateException::what() const throw() {
