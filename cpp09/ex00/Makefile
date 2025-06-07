@@ -88,7 +88,7 @@ endif
 scan: fclean ## Scan-build static analysis
 	@echo "🔍 Running scan-build..."
 	$(info Using scan-build: $(SCAN_BUILD))
-	@CC=$(CC) CXX=$(CXX) $(SCAN_BUILD) \
+	@SCAN_VIEWER=false CC=$(CC) CXX=$(CXX) $(SCAN_BUILD) \
 		-enable-checker alpha \
 		-enable-checker security -enable-checker unix -enable-checker core \
 		-enable-checker cplusplus -enable-checker deadcode -enable-checker nullability \
