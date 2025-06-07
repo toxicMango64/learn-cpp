@@ -19,8 +19,8 @@ class BitcoinExchange {
 private:
     std::map<std::string, float> _database;
     
-    BitcoinExchange(BitcoinExchange const &src) = delete;
-    BitcoinExchange &operator=(BitcoinExchange const &src) = delete;
+    BitcoinExchange(BitcoinExchange const &src);
+    BitcoinExchange &operator=(BitcoinExchange const &src);
     
     std::string min_date;
     std::string max_date;
