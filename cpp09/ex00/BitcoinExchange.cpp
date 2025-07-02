@@ -1,265 +1,143 @@
 #include "BitcoinExchange.hpp"
 
-BitcoinExchange::BitcoinExchange(void) : _database() {
-    try {
-        loadDatabase();
-    } catch (std::exception &e) {
-        throw DatabaseLoadException(e.what());
-    }
-    min_date = _database.begin()->first;
-    max_date = _database.rbegin()->first;
+bool	check_line_validity(const std::string &line);
+bool	check_date_validity(const std::string &date);
+bool	check_amount_validity(double amount, std::string &amount_str, std::istringstream &iss);
+
+BitcoinExchange::BitcoinExchange() : _price_history() {}
+
+BitcoinExchange::BitcoinExchange(const std::string &filename) : _price_history()
+{
+	feed(filename);
 }
 
-BitcoinExchange::BitcoinExchange(BitcoinExchange const &src) : _database(src._database), min_date(src.min_date), max_date(src.max_date) {}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : _price_history(other._price_history) {}
 
-// Destructor
-BitcoinExchange::~BitcoinExchange(void) {}
+BitcoinExchange::~BitcoinExchange() {}
 
-/**
- * Copy assignment operator
- * Checks for self-assignment
- */
- BitcoinExchange &BitcoinExchange::operator=(BitcoinExchange const &src) {
-    if (this != &src) {
-        _database = src._database;
-        min_date = src.min_date;
-        max_date = src.max_date;
-    }
-    return (*this);
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
+{
+	if (this != &other)
+		_price_history = other._price_history;
+	return *this;
 }
 
-static std::pair<std::string, double> parseLine(const std::string &line, char delimiter) {
-    const std::string date = line.substr(0, line.find(delimiter));
-    const std::string value = line.substr(line.find(delimiter) + 1);
-    const double fvalue = std::atof(value.c_str());
-    return std::make_pair(date, fvalue);
-}    
+void BitcoinExchange::feed(const std::string &filename)
+{
+	std::ifstream		file(filename.c_str());
+	std::string			line;
+	std::istringstream	iss;
+	std::string			date;
+	std::string			price;
+	double				price_value;
 
-static void trimCell(std::string &cell) {
-    const size_t start = cell.find_first_not_of(" \t");
-    const size_t end = cell.find_last_not_of(" \t");
-    if (start == std::string::npos) {
-        cell = "";
-    } else {
-        cell = cell.substr(start, end - start + 1);
-    }
+	if (file.is_open() == false)
+		throw CantOpenFileException();
+	while (std::getline(file, line))
+	{
+		date = line.substr(0, line.find(','));
+		price = line.substr(line.find(',') + 1);
+		iss.str(price);
+		iss >> price_value;
+		if (iss.fail() == true)
+			price_value = 0;
+		iss.clear();
+		_price_history[date] = price_value;
+	}
+	file.close();
 }
 
-static bool checkHeader(std::string header, file_type type) {
-    const char delimiter = (type == DATABASE) ? ',' : '|';
-    std::string column1 = "date";
-    std::string column2 = (type == DATABASE) ? "exchange_rate" : "value";
+void BitcoinExchange::convertToValues(const std::string &input_file) const
+{
+	std::ifstream		file(input_file.c_str());
+	std::istringstream	iss;
+	std::string			line;
+	std::string			date;
+	std::string			amount_str;
+	double				amount;
+	double				transaction_value;
 
-    if (std::count(header.begin(), header.end(), delimiter) != 1) {
-        return (false);
-    }
-
-    std::string header1 = header.substr(0, header.find(delimiter));
-    std::string header2 = header.substr(header.find(delimiter) + 1);
-    trimCell(header1);
-    trimCell(header2);
-    trimCell(column1);
-    trimCell(column2);
-
-    return (header1 == column1 && header2 == column2);
+	if (file.is_open() == false)
+		throw CantOpenFileException();
+	while (std::getline(file, line))
+	{
+		if (check_line_validity(line) == false)
+			continue;
+		date = line.substr(0, line.find(' '));
+		if (check_date_validity(date) == false)
+			continue;
+		amount_str = line.substr(line.find('|') + 1);
+		iss.clear();
+		iss.str(amount_str);
+		iss >> amount;
+		if (check_amount_validity(amount, amount_str, iss) == false)
+			continue;
+		std::cout << std::setprecision(2) << std::fixed;
+		transaction_value = amount * getClosestPriceAtDate(date);
+		std::cout << date << " => " << transaction_value << std::endl;
+	}
+	file.close();
 }
 
-void BitcoinExchange::loadDatabase(void) {
-    std::ifstream file(DATA_FILE);
-    std::string line;
-
-    if (!file.is_open()) {
-        throw DatabaseNotFoundException();
-    }    
-
-    std::getline(file, line);
-    if (!checkHeader(line, DATABASE)) {
-        throw BadDatabaseFormatException();
-    }    
-
-    while (std::getline(file, line)) {
-        try {
-            checkLine(line, DATABASE);
-        } catch (std::exception &e) {
-            std::cout << "Error: " << e.what() << '\n';
-            throw BadDatabaseFormatException();
-        }    
-        const std::pair<std::string, double> parsed = parseLine(line, ',');
-        _database[parsed.first] = static_cast<float>(parsed.second);
-    }        
-    file.close();
-}        
-
-void BitcoinExchange::readInput(const std::string &filename) {    
-    std::ifstream file(filename.c_str());
-    std::string line;
-
-    if (!file.is_open()) {
-        throw InputNotFoundException();
-    }    
-    std::getline(file, line);
-    if (!checkHeader(line, INPUT)) {
-        throw BadInputFormatException();
-    }    
-    while (std::getline(file, line)) {
-        try {
-            checkLine(line, INPUT);
-        } catch (std::exception &e) {
-            std::cout << "Error: " << e.what() << '\n';
-            continue ;
-        }    
-        const std::pair<std::string, double> parsed = parseLine(line, '|');
-        _btc(parsed.first, static_cast<float>(parsed.second));
-    }    
-}    
-
-void BitcoinExchange::_btc(const std::string &date, float value) {
-    std::map<std::string, float>::iterator it = _database.find(date);
-    std::string last_date;
-    float last_value = 0.0f;
-
-    if (it != _database.end()) {
-        std::cout << date << " => " << value << " = " << value * it->second << "\n";
-        return;
-    }    
-
-    for (it = _database.begin(); it != _database.end(); ++it) {
-        if (it->first > date) {
-            break;
-        }    
-        last_date = it->first;
-        last_value = it->second;
-    }    
-    std::cout << date << " => " << value << " = " << value * last_value << "\n";
-}    
-
-void BitcoinExchange::checkLine(std::string line, file_type type) {
-    const char delimiter = (type == DATABASE) ? ',' : '|';
-    const int delimiter_count = static_cast<int>(std::count(line.begin(), line.end(), delimiter));
-
-    if (delimiter_count != 1) {
-        throw BadInputDataException(line);
-    }
-
-    std::string date = line.substr(0, line.find(delimiter));
-    std::string value = line.substr(line.find(delimiter) + 1);
-
-    trimCell(date);
-    trimCell(value);
-
-    if (date.empty() || value.empty()) {
-        throw BadInputDataException(line);
-    } else if (!checkDate(date, type)) {
-        throw BadDateException(date);
-    } else if (!checkValue(value, type)) {
-        if (std::atof(value.c_str()) < 0) {
-            throw NegativeValueException();
-        } else if (std::atof(value.c_str()) > 1000) {
-            throw TooLargeValueException();
-        } else {
-            throw BadInputDataException(line);
-        }
-    }
+bool	check_line_validity(const std::string &line)
+{
+	if (line.empty() || line.find('|') == std::string::npos || line.find(' ') == std::string::npos)
+	{
+		std::cerr << "Error: bad input => '" << line << "'" << std::endl;
+		return false;
+	}
+	return true;
 }
 
-bool BitcoinExchange::checkDate(std::string date, file_type type) {
-    if (date.length() != 10) {
-        return (false);
-    }
-    for (int i = 0; i < 10; ++i) {
-        if (!std::isdigit(date[i]) && (i != 4 && i != 7)) {
-            return (false);
-        }
-        else if ((i == 4 || i == 7) && date[i] != '-') {
-            return (false);
-        }
-    }
-    if (type == INPUT && date < min_date) {
-        return (false);
-    }
-
-    const int month = std::atoi(date.substr(5, 2).c_str());
-    const int day = std::atoi(date.substr(8, 2).c_str());
-
-    if (month < 1 || month > 12) {
-        return (false);
-    }
-    if ((month == 2 && day > 29) || 
-        ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30) ||
-        day > 31) {
-        return (false);
-    }
-    return (true);
+bool	check_date_validity(const std::string &date)
+{
+	if (date.size() != 10 || date[4] != '-' || date[7] != '-')
+	{
+		std::cerr << "Error: bad date format => '" << date << "'" << std::endl;
+		return false;
+	}
+	if (date.substr(5, 2) > "12" || date.substr(8, 2) > "31")
+	{
+		std::cerr << "Error: bad date format => '" << date << "'" << std::endl;
+		return false;
+	}
+	return true;
 }
 
-bool BitcoinExchange::checkValue(std::string value, file_type type) {
-    bool dot = false;
-
-    for (size_t i = 0; i < value.length(); ++i) {
-        if (value[i] == '.') {
-            if (dot) {
-                return (false);
-            }
-            dot = true;
-        } else if (!std::isdigit(value[i])) {
-            return (false);
-        }
-    }
-    const double floatValue = std::atof(value.c_str());
-    if (type == INPUT) {
-        if (floatValue < 0 || floatValue > 1000) {
-            return (false);
-        }
-    }
-    return (true);
+bool	check_amount_validity(double amount, std::string &amount_str, std::istringstream &iss)
+{
+	if (iss.fail() == true)
+	{
+		std::cout << "Error: not a number => '" << amount_str << "'" << std::endl;
+		return false;
+	}
+	if (amount < 0)
+	{
+		std::cout << "Error: not a positive number => '" << amount_str << "'" << std::endl;
+		return false;
+	}
+	if (amount >= std::numeric_limits<int>::max())
+	{
+		std::cout << "Error: number too large => '" << amount_str << "'" << std::endl;
+		return false;
+	}
+	return true;
 }
 
-BitcoinExchange::DatabaseLoadException::DatabaseLoadException(std::string const &error_message) : _error_message(error_message) {
-    return ;
+double BitcoinExchange::getClosestPriceAtDate(const std::string &date) const
+{
+	std::map<std::string, double>::const_iterator it;
+
+	it = _price_history.find(date);
+	if (it != _price_history.end()) //found the exact date
+		return it->second;
+	it = _price_history.lower_bound(date); //take the first element that's not less than date
+	if (it == _price_history.begin()) //date is before the first date in the csv
+		return 0;
+	return (--it)->second; //returns the price just before the date found
 }
 
-const char *BitcoinExchange::DatabaseLoadException::what() const throw() {
-    return (_error_message.c_str());
-}
-
-const char *BitcoinExchange::DatabaseNotFoundException::what() const throw() {
-    return ("Database file not found. Please ensure there is a `data.csv` file.");
-}
-
-const char *BitcoinExchange::BadDatabaseFormatException::what() const throw() {
-    return ("Bad format in Database file. Ensure the file follows the `date,exchange_rate` format.");
-}
-
-const char *BitcoinExchange::BadDatabaseDataException::what() const throw() {
-    return ("Bad data in Database file. Please ensure the database is correctly filled.");
-}
-
-const char *BitcoinExchange::InputNotFoundException::what() const throw() {
-    return ("Input file not found. Please ensure the input file exists and has proper permissions.");
-}
-
-const char *BitcoinExchange::BadInputFormatException::what() const throw() {
-    return ("Bad format in Input file. Ensure the input file follows the `date|value` format.");
-}
-
-BitcoinExchange::BadInputDataException::BadInputDataException(const std::string &line)
-    : _error_message("Bad input data => " + line) {}
-
-const char *BitcoinExchange::BadInputDataException::what() const throw() {
-    return (_error_message.c_str());
-}
-
-BitcoinExchange::BadDateException::BadDateException(const std::string &date)
-    : _error_message("Invalid date => " + date) {}
-
-const char *BitcoinExchange::BadDateException::what() const throw() {
-    return (_error_message.c_str());
-}
-
-const char *BitcoinExchange::NegativeValueException::what() const throw() {
-    return ("Negative value encountered. Values must be positive.");
-}
-
-const char *BitcoinExchange::TooLargeValueException::what() const throw() {
-    return ("Value is too large. It should not exceed 1000.");
+const char *BitcoinExchange::CantOpenFileException::what() const throw()
+{
+	return "Error: can't open file";
 }

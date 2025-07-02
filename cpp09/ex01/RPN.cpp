@@ -1,103 +1,78 @@
 #include "RPN.hpp"
 
-evaluator::evaluator(void) { }
+RPN::RPN() : _stack() {}
 
-evaluator::evaluator(evaluator const &src) { *this = src; }
+RPN::RPN(RPN const &other) : _stack(other._stack) {}
 
-evaluator::~evaluator(void) { }
-
-evaluator &evaluator::operator=(evaluator const &src) {
-    if (this != &src) { *this = src; }
-    return (*this);
+RPN &RPN::operator=(RPN const &rhs)
+{
+	if (this != &rhs)
+		_stack = rhs._stack;
+	return (*this);
 }
 
-static bool isOperand(const std::string &token) {
-    if (token.empty()) {
-        return false;
-    }
-    char* end = NULL;
-    const double val = std::strtod(token.c_str(), &end);
-    if (end == token.c_str() + token.size() && val >= 0 && val <= 9) {
-        return true;
-    }
-    return false;
+RPN::~RPN() {}
+
+void RPN::addOperand(const char op)
+{
+	int n1, n2;
+
+	if (_stack.size() < 2)
+		throw stackTooSmallException();
+	n2 = _stack.top();
+	_stack.pop();
+	n1 = _stack.top();
+	_stack.pop();
+	switch (op)
+	{
+		case '+':
+			_stack.push(n1 + n2);
+			break;
+		case '-':
+			_stack.push(n1 - n2);
+			break;
+		case '/':
+			if (n2 == 0)
+				throw divisionByZeroException();
+			_stack.push(n1 / n2);
+			break;
+		case '*':
+			_stack.push(n1 * n2);
+			break;
+		default:
+			throw invalidOperandException();
+			break;
+	}
 }
 
-static bool isOperator(const std::string &token) {
-    if (token == "+" || token == "-" || token == "*" || token == "/") {
-        return (true);
-    }
-    return (false);
+void RPN::addNumber(const int n)
+{
+	_stack.push(n);
 }
 
-double evaluator::evaluate(const std::string &expression) {
-    std::istringstream iss(expression);
-    std::string token;
-
-    while (iss >> token)
-    {
-        if (isOperand(token)) {
-            _operands.push(std::strtod(token.c_str(), NULL));
-        }
-        else if (isOperator(token)) {
-            try {
-                _doOperation(token.begin()[0]);
-            } catch (std::exception &e) {
-                throw EvaluateErrorException(e.what());
-            }
-        }
-        else {
-            throw EvaluateErrorException("Invalid token: " + token);
-        }
-    }
-    if (_operands.size() != 1) {
-        throw EvaluateErrorException("Invalid expression: More or less than one operand left on stack.");
-    }
-    return (_operands.top());
+int	RPN::getResult(void) const
+{
+	if (_stack.size() > 1)
+		throw invalidExpressionException();
+	return (_stack.top());
 }
 
-void evaluator::_doOperation(char op) {
-    double result = 0;
-    double op1 = 0;
-    double op2 = 0;
-
-    if (_operands.size() < 2) {
-        throw EvaluateErrorException("Invalid expression: Not enough operands for operator.");
-    }
-    op2 = _operands.top();
-    _operands.pop();
-    op1 = _operands.top();
-    _operands.pop();
-    switch (op)
-    {
-    case '+':
-        result = op1 + op2;
-        break;
-    case '-':
-        result = op1 - op2;
-        break;
-    case '*':
-        result = op1 * op2;
-        break;
-    case '/':
-        if (op2 == 0){
-            throw EvaluateErrorException("Division by zero.");
-            return ;
-        }
-        result = op1 / op2;
-        break;
-    default:
-        throw EvaluateErrorException("Unknown operator: " + std::string(1, op));
-        return ;
-    }
-    _operands.push(result);
-    return ;
+const char *RPN::invalidOperandException::what() const throw()
+{
+	return ("Error: invalid operand");
 }
 
-evaluator::EvaluateErrorException::EvaluateErrorException(const std::string& message) : _message(message) {
-    return ;
+const char *RPN::stackTooSmallException::what() const throw()
+{
+	return ("Error: stack too small");
 }
 
-const char *evaluator::EvaluateErrorException::what() const throw() {
-    return (_message.c_str());
+const char *RPN::divisionByZeroException::what() const throw()
+{
+	return ("Error: division by zero");
+}
+
+const char *RPN::invalidExpressionException::what() const throw()
+{
+	return ("Error: invalid expression");
 }

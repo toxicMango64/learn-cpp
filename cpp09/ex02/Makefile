@@ -1,26 +1,27 @@
-NAME		= PmergeMe
-CXX			= c++
-CXXFLAGS	= -Wall -Wextra -Werror -std=c++98# -Wshadow
-RM	= rm -fr
+# Copyright [2025] <myousaf>
+NAME = PmergeMe
+CC := c++
+CFLAGS := -Wall -Wextra -Werror -std=c++98
+MKDIR := mkdir -p
 
-SRC :=	main.cpp \
-		PmergeMe.cpp
+SRC = main.cpp
 
-OBJ_PATH	=./obj/
-OBJ			= $(addprefix $(OBJ_PATH), $(notdir $(SRC:.cpp=.o)))
+OBJ_PATH	= ./obj/
+OBJ := $(addprefix $(OBJ_PATH), $(notdir $(SRC:.cpp=.o)))
+
 $(OBJ_PATH)%.o: %.cpp
-	@mkdir -p $(OBJ_PATH)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(MKDIR) $(OBJ_PATH)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	$(CXX) $(CXXFLAGS) $(OBJ) -I $(OBJ_PATH) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -I $(OBJ_PATH) -o $(NAME)
 
 PHONY := all
-all:		$(NAME)
+all: $(NAME)
 
 PHONY += clean
 clean:
-	$(RM) $(OBJ) $(OBJ_PATH)
+	$(RM) -r $(OBJ) $(OBJ_PATH)
 
 PHONY += fclean
 fclean: clean
@@ -29,4 +30,4 @@ fclean: clean
 PHONY += re
 re: fclean all
 
-.PHONY = ${PHONY}
+.PHONY: ${PHONY}

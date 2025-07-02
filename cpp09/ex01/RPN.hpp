@@ -1,34 +1,50 @@
 #ifndef RPN_HPP
 # define RPN_HPP
 
-# include <iostream>
-# include <cstdlib>
-# include <string>
-# include <sstream>
-# include <iomanip>
-# include <cmath>
 # include <stack>
+# include <string>
+# include <exception>
 
-class evaluator
+class RPN
 {
-private:
-    std::stack<double> _operands;
-    void _doOperation(char op);
-public:
-    evaluator();
-    evaluator(evaluator const &src);
-    ~evaluator();
-    evaluator &operator=(evaluator const &src);
-    double evaluate(const std::string &expression);
+	public:
+		RPN();
+		RPN(RPN const &other);
+		~RPN();
+		RPN &operator=(RPN const &rhs);
+		void	addOperand(const char op);
+		void	addNumber(const int n);
+		int		getResult(void) const;
+		class	invalidOperandException;
+		class	stackTooSmallException;
+		class	divisionByZeroException;
+		class	invalidExpressionException;
+	private:
+		std::stack<int>	_stack;
+};
 
-    class EvaluateErrorException : public std::exception {
-    private:
-        std::string _message;
-    public:
-        EvaluateErrorException(const std::string& message);
-        virtual ~EvaluateErrorException() throw() {};
-        virtual const char *what() const throw();
-    };
+class RPN::invalidOperandException : public std::exception
+{
+	public:
+		virtual const char *what() const throw();
+};
+
+class RPN::stackTooSmallException : public std::exception
+{
+	public:
+		virtual const char *what() const throw();
+};
+
+class RPN::divisionByZeroException : public std::exception
+{
+	public:
+		virtual const char *what() const throw();
+};
+
+class RPN::invalidExpressionException : public std::exception
+{
+	public:
+		virtual const char *what() const throw();
 };
 
 #endif
