@@ -6,8 +6,9 @@ RPN::RPN(RPN const &other) : _stack(other._stack) {}
 
 RPN &RPN::operator=(RPN const &rhs)
 {
-	if (this != &rhs)
+	if (this != &rhs) {
 		_stack = rhs._stack;
+	}
 	return (*this);
 }
 
@@ -15,10 +16,12 @@ RPN::~RPN() {}
 
 void RPN::addOperand(const char op)
 {
-	int n1, n2;
+	int n1 = 0;
+	int n2 = 0;
 
-	if (_stack.size() < 2)
+	if (_stack.size() < 2) {
 		throw stackTooSmallException();
+	}
 	n2 = _stack.top();
 	_stack.pop();
 	n1 = _stack.top();
@@ -27,21 +30,21 @@ void RPN::addOperand(const char op)
 	{
 		case '+':
 			_stack.push(n1 + n2);
-			break;
+			break ;
 		case '-':
 			_stack.push(n1 - n2);
-			break;
+			break ;
 		case '/':
-			if (n2 == 0)
+			if (n2 == 0) {
 				throw divisionByZeroException();
+			}
 			_stack.push(n1 / n2);
-			break;
+			break ;
 		case '*':
 			_stack.push(n1 * n2);
-			break;
+			break ;
 		default:
 			throw invalidOperandException();
-			break;
 	}
 }
 
@@ -52,8 +55,9 @@ void RPN::addNumber(const int n)
 
 int	RPN::getResult(void) const
 {
-	if (_stack.size() > 1)
+	if (_stack.size() > 1) {
 		throw invalidExpressionException();
+	}
 	return (_stack.top());
 }
 
