@@ -1,11 +1,11 @@
 #include "PmergeMe.hpp"
-#include <ctime>
-#include <iostream>
-#include <stdint.h>
 #include <deque>
-#include <list>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
+#include <stdint.h>
+#include <ctime>
+#include <list>
 
 static int8_t	check_args(const int argc, const char **argv);
 template <typename Container1, typename Container2>
@@ -51,7 +51,7 @@ static int8_t check_args(const int argc, const char **argv)
 {
 	if (argc < 2)
 	{
-		std::cerr << "Error: invalid arguments" << std::endl;
+		std::cerr << "Error: invalid arguments\n";
 		return -1;
 	}
 	(void)argv;
@@ -81,14 +81,14 @@ static void print_container(const Container &container)
 {
 	for (typename Container::const_iterator it = container.begin(); it != container.end(); it++)
 		std::cout << *it << " ";
-	std::cout << std::endl;
+	std::cout << "\n";
 }
 
 template <typename Container1, typename Container2>
 static void	sort(size_t &vec_time, size_t &list_time, PmergeMe<Container1> &vec_sorter, PmergeMe<Container2> &list_sorter)
 {
-	size_t	start_time;
-	size_t	end_time;
+	size_t	start_time = 0;
+	size_t	end_time = 0;
 	
 	//get deque time
 	start_time = clock(); 
@@ -109,6 +109,6 @@ static void print_times(const size_t deque_time, const size_t list_time, const i
 	
 	base_msg << "Time to process a range of " << n_numbers << " elements with std::";
 	base_str = base_msg.str();
-	std::cout << base_str + "deque: " << deque_time << " us" << std::endl;
-	std::cout << base_str + "list: "  << list_time << " us"  << std::endl;
+	std::cout << base_str + "deque: " << deque_time << " us\n";
+	std::cout << base_str + "list: "  << list_time << " us"  << "\n";
 }
