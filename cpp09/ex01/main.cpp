@@ -4,15 +4,27 @@
 #include <vector>
 #include "RPN.hpp"
 
-static std::vector<std::string>	tokenize(const std::string &str);
+static std::vector<std::string> tokenize(const std::string &str)
+{
+	std::istringstream			iss(str);
+	std::vector<std::string>	tokens;
+	std::string					token;
+
+	while (iss >> token) {
+		tokens.push_back(token);
+	}
+	return (tokens);
+}
 
 static int	check_args(const int argc, const char * const *argv)
 {
 	(void)argv;
 	if (argc != 2)
 	{
-		std::cerr << "Invalid Number of Arguments\n";
-		return(-1);		
+		std::cerr << "Invalid Number of Arguments: "
+				  << "Usage: ./rpn \"<expression>\"\n"
+				  << "Where <expression> is a sequence of single-digit numbers and operators (+, -, *, /) separated by spaces.\n";
+		return (-1);
 	}
 	return (0);
 }
@@ -61,16 +73,4 @@ int main(const int argc, const char * const *argv)
 		std::cerr << e.what() << "\n";
 		return (1);
 	}
-}
-
-static std::vector<std::string> tokenize(const std::string &str)
-{
-	std::istringstream			iss(str);
-	std::vector<std::string>	tokens;
-	std::string					token;
-
-	while (iss >> token) {
-		tokens.push_back(token);
-	}
-	return (tokens);
 }
