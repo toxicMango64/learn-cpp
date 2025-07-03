@@ -1,12 +1,6 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
-// # include <exception>
-// # include <algorithm>
-// # include <iterator>
-// # include <vector>
-// # include <cstddef>
-
 # define K 5
 
 template <typename Container>
