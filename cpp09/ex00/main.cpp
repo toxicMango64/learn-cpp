@@ -1,6 +1,19 @@
 #include "BitcoinExchange.hpp"
 
-static int8_t	check_args(int argc, char **argv);
+static int8_t	check_args(int argc, char **argv)
+{
+	if (argc != 2)
+	{
+		std::cerr << "Usage: " << argv[0] << " <input_file>\n";
+		return 1;
+	}
+	if (std::string(argv[1]).find(".csv") == std::string::npos)
+	{
+		std::cerr << "Error: input file must be a .csv file\n";
+		return 1;
+	}
+	return 0;
+}
 
 int main(int argc, char **argv)
 {
@@ -16,19 +29,4 @@ int main(int argc, char **argv)
 	{
 		std::cerr << e.what() << '\n';
 	}
-}
-
-static int8_t	check_args(int argc, char **argv)
-{
-	if (argc != 2)
-	{
-		std::cerr << "Usage: " << argv[0] << " <input_file>\n";
-		return 1;
-	}
-	if (std::string(argv[1]).find(".csv") == std::string::npos)
-	{
-		std::cerr << "Error: input file must be a .csv file\n";
-		return 1;
-	}
-	return 0;
 }

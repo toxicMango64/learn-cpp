@@ -136,17 +136,16 @@ double BitcoinExchange::getClosestPriceAtDate(const std::string &date) const
 	std::map<std::string, double>::const_iterator it;
 
 	it = _price_history.find(date);
-	if (it != _price_history.end()) {/** found the exact date */
+	if (it != _price_history.end()) { /** found the exact date */
 		return it->second;
 	}
 	it = _price_history.lower_bound(date); /** take the first element that's not less than date */
-	if (it == _price_history.begin()) { /* date is before the first date in the csv */
-		return 0;
+	if (it == _price_history.begin()) { /** date is before the first date in the csv */
+		return (0);
 	}
-	return (--it)->second; //returns the price just before the date found
+	return (--it)->second; /** returns the price just before the date found */
 }
 
-const char *BitcoinExchange::CantOpenFileException::what() const throw()
-{
+const char *BitcoinExchange::CantOpenFileException::what() const throw() {
 	return "Error: can't open file";
 }
