@@ -139,7 +139,6 @@ TIDY_FLAGS =	'clang-analyzer-*,\
 				llvm-include-order,\
 				cppcoreguidelines-init-variables,\
 				llvmlibc-inline-function-decl,\
-				hicpp-braces-around-statements,\
 				readability-braces-around-statements,\
 				google-runtime-int,\
 				readability-implicit-bool-conversion,\
@@ -153,7 +152,6 @@ TIDY_FLAGS =	'clang-analyzer-*,\
 				hicpp-signed-bitwise,\
 				hicpp-deprecated-headers,\
 				modernize-deprecated-headers,\
-				misc-use-anonymous-namespace,\
 				misc-definitions-in-headers'
 
 TIDY_EXTRA_ARGS =	--extra-arg=-std=c++98 \
