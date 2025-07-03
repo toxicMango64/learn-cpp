@@ -41,16 +41,16 @@ void insertionSort(Iterator begin, Iterator end)
 	{
 		typename std::iterator_traits<Iterator>::value_type val = *i;
 		Iterator j = i;
-		Iterator k = j;
+		Iterator ITERATOR = j;
 
 		while (j != begin) {
-			k = j;
+			ITERATOR = j;
 			--j;
 			if (!(*j > val)) {
 				++j;
 				break;
 			}
-			*k = *j;
+			*ITERATOR = *j;
 		}
 		*j = val;
 	}
@@ -63,7 +63,7 @@ static void	fordJhonsonSort(Iterator begin, Iterator end)
 
 	if (size < 2)
 		return;
-	if (size < K)
+	if (size < ITERATOR)
 		insertionSort(begin, end);
 	else
 	{

@@ -1,7 +1,7 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
-# define K 5
+# define ITERATOR 5
 
 template <typename Container>
 class PmergeMe
