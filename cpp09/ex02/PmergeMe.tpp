@@ -1,4 +1,9 @@
 #include "PmergeMe.hpp"
+# include <exception>
+# include <algorithm>
+# include <iterator>
+# include <vector>
+# include <cstddef>
 
 template <typename Iterator>
 static void	fordJhonsonSort(Iterator begin, Iterator end);

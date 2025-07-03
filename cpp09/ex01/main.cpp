@@ -1,8 +1,8 @@
-#include "RPN.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include "RPN.hpp"
 
 static std::vector<std::string>	tokenize(const std::string &str);
 
