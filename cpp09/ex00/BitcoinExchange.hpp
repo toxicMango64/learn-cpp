@@ -23,9 +23,19 @@ class BitcoinExchange
 		void convertToValues(const std::string &input_file) const;
 		class CantOpenFileException;
 	private:
-		//compare_dates 
+		enum Month {
+			JAN = 1, FEB, MAR, APR, MAY, JUN,
+			JUL, AUG, SEPT, OCT, NOV, DEC
+		};
+
+		enum MonthLength {
+			SHORTMONTH = 30,
+			LONGMONTH = 31,
+			FebSpecial
+		};
+		/** compare_dates */
 		double	getClosestPriceAtDate(const std::string &date) const;
-		//the default comparator std::less<std::string> is perfect because the date format yyyy-mm-dd is lexographically ordered
+		/** the default comparator std::less<std::string> is perfect because the date format yyyy-mm-dd is lexographically ordered */
 		std::map<std::string, double, std::less<std::string> > _price_history;
 };
 
