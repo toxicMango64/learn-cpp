@@ -43,11 +43,11 @@ int main(const int argc, const char * const *argv)
 	std::vector<std::string>	tokens;
 	RPN							rpn;
 	size_t						n_tokens = 0;
-
+	
+	if (check_args(argc, argv) == -1) {
+		return (1);
+	}
 	try	{
-		if (check_args(argc, argv) == -1) {
-			return (1);
-		}
 		tokens = tokenize(std::string(argv[1]));
 		n_tokens = tokens.size();
 		for (size_t i = 0; i < n_tokens; i++) {
