@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <ctime>
 #include <list>
+#include <stdexcept>
 
 template <typename Container1, typename Container2>
 static void	fill_containers(Container1 &c1, Container2 &c2, const int n_numbers, const char **numbers)
@@ -15,13 +16,20 @@ static void	fill_containers(Container1 &c1, Container2 &c2, const int n_numbers,
 	
 	for (int i = 0; i < n_numbers; i++)
 	{
+		iss.clear();
 		iss.str(numbers[i]);
 		iss >> number;
-		if (iss.fail() || !iss.eof())
-		throw std::invalid_argument("Error: not a number");
-	c1.push_back(number);
-	c2.push_back(number);
-	iss.clear();
+
+		if (iss.fail() || !iss.eof()) {
+
+			std::ostringstream err_msg;
+			err_msg << "Error: '" << numbers[i] << "'" << " is not a number";
+
+			throw std::invalid_argument(err_msg.str());
+		}
+
+		c1.push_back(number);
+		c2.push_back(number);
 	}
 }
 
@@ -39,12 +47,14 @@ static void	sort(size_t &vec_time, size_t &list_time, PmergeMe<Container1> &vec_
 	size_t	start_time = 0;
 	size_t	end_time = 0;
 	
-	//get deque time
+	/** get deque time */
 	start_time = clock(); 
 	vec_sorter.sort();
 	end_time = clock();
 	vec_time = (end_time - start_time) * 1000000 / CLOCKS_PER_SEC;
-	//get list time
+	/** get list time
+	 * use start_time as end_time of deque
+	 */
 	start_time = end_time;
 	list_sorter.sort();
 	end_time = clock();
@@ -59,7 +69,7 @@ static void print_times(const size_t deque_time, const size_t list_time, const i
 	base_msg << "Time to process a range of " << n_numbers << " elements with std::";
 	base_str = base_msg.str();
 	std::cout << base_str + "deque: " << deque_time << " us\n";
-	std::cout << base_str + "list: "  << list_time << " us"  << "\n";
+	std::cout << base_str + "list: "  << list_time << " us\n";
 }
 
 int main(const int argc, const char **argv)
@@ -76,8 +86,8 @@ int main(const int argc, const char **argv)
 	if (argc < 2)
 	{
 		std::cerr << "Error: invalid arguments\n"
-			"\ttry \"./PmergeMe 1 2 3 ...\"\n";
-		return -1;
+			"\ttry \"./PmergeMe 3 1 2 ...\"\n";
+		return (1);
 	}
 
 	try

@@ -41,16 +41,16 @@ void insertionSort(Iterator begin, Iterator end)
 	{
 		typename std::iterator_traits<Iterator>::value_type val = *i;
 		Iterator j = i;
-		Iterator ITERATOR = j;
+		Iterator k = j;
 
 		while (j != begin) {
-			ITERATOR = j;
+			k = j;
 			--j;
 			if (!(*j > val)) {
 				++j;
-				break;
+				break ;
 			}
-			*ITERATOR = *j;
+			*k = *j;
 		}
 		*j = val;
 	}
@@ -62,9 +62,9 @@ static void	fordJhonsonSort(Iterator begin, Iterator end)
 	size_t size = std::distance(begin, end);
 
 	if (size < 2)
-		return;
+		return ;
 	if (size < ITERATOR)
-		insertionSort(begin, end);
+		return (insertionSort(begin, end));
 	else
 	{
 		Iterator mid = begin;
